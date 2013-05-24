@@ -1,8 +1,8 @@
-package Email::Stuff;
+package Email::Stuffer;
 
 =head1 NAME
 
-Email::Stuff - A more casual approach to creating and sending Email:: emails
+Email::Stuffer - A more casual approach to creating and sending Email:: emails
 
 =head1 SYNOPSIS
 
@@ -14,7 +14,8 @@ Email::Stuff - A more casual approach to creating and sending Email:: emails
   
   Yes, I know what you are thinking... but it was actually a total accident.
   
-  I was in a crowded line at a BayWatch signing, and I tripped, and stood on his head.
+  I was in a crowded line at a BayWatch signing, and I tripped, and stood on
+  his head.
   
   I know. Oops! :/
   
@@ -23,30 +24,29 @@ Email::Stuff - A more casual approach to creating and sending Email:: emails
   Be near the pinhole to the Dimension of Pain at midnight.
   
   Alias
-  
+
   AMBUSH_READY
   
   # Create and send the email in one shot
-  Email::Stuff->from     ('cpan@ali.as'                      )
-              ->to       ('santa@northpole.org'              )
-              ->bcc      ('bunbun@sluggy.com'                )
-              ->text_body($body                              )
-              ->attach   (io('dead_bunbun_faked.gif')->all,
-                          filename => 'dead_bunbun_proof.gif')
-              ->send;
+  Email::Stuffer->from     ('cpan@ali.as'                      )
+                ->to       ('santa@northpole.org'              )
+                ->bcc      ('bunbun@sluggy.com'                )
+                ->text_body($body                              )
+                ->attach   (io('dead_bunbun_faked.gif')->all,
+                            filename => 'dead_bunbun_proof.gif')
+                ->send;
 
 =head1 DESCRIPTION
 
 B<The basics should all work, but this module is still subject to
 name and/or API changes>
 
-Email::Stuff, as its name suggests, is a fairly casual module used
-to email "stuff" to people using the most common methods. It is a 
-high-level module designed for ease of use when doing a very specific
-common task, but implemented on top of the tight and correct Email::
-modules.
+Email::Stuffer, as its name suggests, is a fairly casual module used
+to stuff things into an email and send them. It is a high-level module
+designed for ease of use when doing a very specific common task, but
+implemented on top of the light and tolerable Email:: modules.
 
-Email::Stuff is typically used to build emails and send them in a single
+Email::Stuffer is typically used to build emails and send them in a single
 statement, as seen in the synopsis. And it is certain only for use when
 creating and sending emails. As such, it contains no email parsing
 capability, and little to no modification support.
@@ -55,14 +55,15 @@ To re-iterate, this is very much a module for those "slap it together and
 fire it off" situations, but that still has enough grunt behind the scenes
 to do things properly.
 
-=head2 Default Mailer
+=head2 Default Transport
 
-Although it cannot be relied upon to work, the default behaviour is to use
-sendmail to send mail, if you don't provide the mail send channel with
-either the C<using> method, or as an argument to C<send>.
+Although it cannot be relied upon to work, the default behaviour is to
+use C<sendmail> to send mail, if you don't provide the mail send channel
+with either the C<transport> method, or as an argument to C<send>.
 
-The use of sendmail as the default mailer is consistent with the behaviour
-of the L<Email::Send> module itself.
+(Actually, the choice of default is delegated to
+L<Email::Sender::Simple>, which makes its own choices.  But usually, it
+uses C<sendmail>.)
 
 =head2 Why use this?
 
@@ -76,70 +77,73 @@ text body, HTML, both, with or without an attachment etc.
 
 Then there's brevity... compare the following roughly equivalent code.
 
-First, the Email::Stuff way.
+First, the Email::Stuffer way.
 
-  Email::Stuff->to('Simon Cozens<simon@somewhere.jp>')
-              ->from('Santa@northpole.org')
-              ->text_body("You've been a good boy this year. No coal for you.")
-              ->attach_file('choochoo.gif')
-              ->send;
+  Email::Stuffer->to('Simon Cozens<simon@somewhere.jp>')
+                ->from('Santa@northpole.org')
+                ->text_body("You've been good this year. No coal for you.")
+                ->attach_file('choochoo.gif')
+                ->send;
 
 And now doing it directly with a knowledge of what your attachment is, and
 what the correct MIME structure is.
 
   use Email::MIME;
-  use Email::Send;
+  use Email::Sender::Simple;
   use IO::All;
   
-  send SMTP => Email::MIME->create(
-    header => [
-        To => 'simon@somewhere.jp',
-        From => 'santa@northpole.org',
-    ],
-    parts => [
-        Email::MIME->create(
-          body => "You've been a good boy this year. No coal for you."
-        ),
-        Email::MIME->create(
-          body => io('choochoo.gif'),
-          attributes => {
-              filename => 'choochoo.gif',
-              content_type => 'image/gif',
-          },
-       ),
-    ],
+  Email::Sender::Simple->try_to_send(
+    Email::MIME->create(
+      header => [
+          To => 'simon@somewhere.jp',
+          From => 'santa@northpole.org',
+      ],
+      parts => [
+          Email::MIME->create(
+            body => "You've been a good boy this year. No coal for you."
+          ),
+          Email::MIME->create(
+            body => io('choochoo.gif'),
+            attributes => {
+                filename => 'choochoo.gif',
+                content_type => 'image/gif',
+            },
+         ),
+      ],
+    );
   );
 
 Again, if you know MIME well, and have the patience to manually code up
-the L<Email::MIME> structure, go do that.
+the L<Email::MIME> structure, go do that, if you really want to.
 
-Email::Stuff, as the name suggests, solves one case and one case only.
-
-Generate some stuff, and email it to somewhere. As conveniently as
+Email::Stuffer as the name suggests, solves one case and one case only:
+generate some stuff, and email it to somewhere, as conveniently as
 possible. DWIM, but do it as thinly as possible and use the solid
 Email:: modules underneath.
 
 =head1 COOKBOOK
 
 Here is another example (maybe plural later) of how you can use
-Email::Stuff's brevity to your advantage.
+Email::Stuffer's brevity to your advantage.
 
 =head2 Custom Alerts
 
   package SMS::Alert;
-  use base 'Email::Stuff';
+  use base 'Email::Stuffer';
   
   sub new {
-          shift()->SUPER::new(@_)
-                 ->from('monitor@my.website')
-                 # Of course, we could have pulled these from
-                 # $MyConfig->{support_tech} or something similar.
-                 ->to('0416181595@sms.gateway')
-                 ->using('SMTP', Host => '123.123.123.123');
+    shift()->SUPER::new(@_)
+           ->from('monitor@my.website')
+           # Of course, we could have pulled these from
+           # $MyConfig->{support_tech} or something similar.
+           ->to('0416181595@sms.gateway')
+           ->transport('SMTP', { host => '123.123.123.123' });
   }
 
+Z<>
+
   package My::Code;
-  
+
   unless ( $Server->restart ) {
           # Notify the admin on call that a server went down and failed
           # to restart.
@@ -150,11 +154,11 @@ Email::Stuff's brevity to your advantage.
 =head1 METHODS
 
 As you can see from the synopsis, all methods that B<modify> the
-Email::Stuff object returns the object, and thus most normal calls are
+Email::Stuffer object returns the object, and thus most normal calls are
 chainable.
 
 However, please note that C<send>, and the group of methods that do not
-change the Email::Stuff object B<do not> return the  object, and thus
+change the Email::Stuffer object B<do not> return the object, and thus
 B<are not> chainable.
 
 =cut
@@ -163,10 +167,10 @@ use 5.005;
 use strict;
 use Carp                   ();
 use File::Basename         ();
-use Params::Util           '_INSTANCE';
+use Params::Util           qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
 use Email::MIME::Creator   ();
-use Email::Send            ();
+use Email::Sender          ();
 use prefork 'File::Type';
 
 use vars qw{$VERSION};
@@ -179,7 +183,7 @@ BEGIN {
 
 =head2 new
 
-Creates a new, empty, Email::Stuff object.
+Creates a new, empty, Email::Stuffer object.
 
 =cut
 
@@ -187,8 +191,6 @@ sub new {
 	my $class = ref $_[0] || $_[0];
 
 	my $self = bless {
-		send_using => [ 'Sendmail' ],
-		# mailer   => undef,
 		parts      => [],
 		email      => Email::MIME->create(
 			header => [],
@@ -375,7 +377,7 @@ sub html_body {
 
 Adds an attachment to the email. The first argument is the file contents
 followed by (as for text_body and html_body) the list of headers to use.
-Email::Stuff should TRY to guess the headers right, but you may wish
+Email::Stuffer should TRY to guess the headers right, but you may wish
 to provide them anyway to be sure. Encoding is Base64 by default.
 
 =cut
@@ -458,29 +460,41 @@ sub _slurp {
 	\$source;
 }
 
-=head2 using $drivername, @options
+=head2 transport
 
-The C<using> method specifies the L<Email::Send> driver that you want to use to
-send the email, and any options that need to be passed to the driver at the
-time that we send the mail.
+  $stuffer->transport( $moniker, \%options )
 
-Alternatively, you can pass a complete mailer object (which must be an
-L<Email::Send> object) and it will be used as is.
+or
+
+  $stuffer->transport( $transport_obj )
+
+The C<transport> method specifies the L<Email::Sender> transport that
+you want to use to send the email, and any options that need to be
+used to instantiate the transport.  C<$moniker> is used as the transport
+name; if it starts with an equals sign (C<=>) then the text after the
+sign is used as the class.  Otherwise, the text is prepended by
+C<Email::Sender::Transport::>.  In neither case will a module be
+automatically loaded.
+
+Alternatively, you can pass a complete transport object (which must be
+an L<Email::Send> object) and it will be used as is.
 
 =cut
 
-sub using {
+sub transport {
 	my $self = shift;
 
 	if ( @_ ) {
-		# Change the mailer
-		if ( _INSTANCE($_[0], 'Email::Send') ) {
-			$self->{mailer} = shift;
-			delete $self->{send_using};
+		# Change the transport
+		if ( _INSTANCEDOES($_[0], 'Email::Sender::Transport') ) {
+			$self->{transport} = shift;
 		} else {
-			$self->{send_using} = [ @_ ];
-			delete $self->{mailer};
-			$self->mailer;
+		  my ($moniker, $arg) = @_;
+		  my $class = $moniker =~ s/\A=//
+		            ? $moniker
+		            : "Email::Sender::Transport::$moniker";
+			my $transport = $class->new($arg);
+			$self->{transport} = $transport;
 		}
 	}
 
@@ -565,68 +579,27 @@ sub as_string {
 
 =head2 send
 
-Sends the email via L<Email::Send>.
+Sends the email via L<Email::Sender::Simple>.
 
 =cut
 
 sub send {
 	my $self = shift;
-	$self->using(@_) if @_; # Arguments are passed to ->using
+	my $arg  = shift;
 	my $email = $self->email or return undef;
-	$self->mailer->send( $email );
-}
 
-sub _driver {
-	my $self = shift;
-	$self->{send_using}->[0];
-}
+	my $transport = $self->{transport};
 
-sub _options {
-	my $self = shift;
-	my $options = $#{$self->{send_using}};
-	@{$self->{send_using}}[1 .. $options];
-}
-
-=head2 mailer
-
-If you need to interact with it directly, the C<mailer> method
-returns the L<Email::Send> mailer object that will be used to
-send the email.
-
-Returns an L<Email::Send> object, or dies if the driver is not
-available.
-
-=cut
-
-sub mailer { 
-	my $self = shift;
-	return $self->{mailer} if $self->{mailer};
-
-	my $driver = $self->_driver;
-	$self->{mailer} = Email::Send->new( {
-		mailer      => $driver,
-		mailer_args => [ $self->_options ],
-		} );
-	unless ( $self->{mailer}->mailer_available($driver, $self->_options) ) {
-		Carp::croak("Driver $driver is not available");
-	}
-
-	$self->{mailer};
+	Email::Sender::Simple->send(
+	  $email,
+	  {
+      ($transport ? (transport => $transport) : ()),
+      %$arg,
+    },
+  );
 }
 
 
-
-
-
-#####################################################################
-# Legacy compatibility
-
-sub To      { shift->to(@_)      }
-sub From    { shift->from(@_)    }
-sub CC      { shift->cc(@_)      }
-sub BCC     { shift->bcc(@_)     }
-sub Subject { shift->subject(@_) }
-sub Email   { shift->email(@_)   }
 
 1;
 
@@ -642,25 +615,20 @@ sub Email   { shift->email(@_)   }
 
 =back
 
-=head1 SUPPORT
-
-All bugs should be filed via the CPAN bug tracker at
-
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Email-Stuff>
-
 =head1 AUTHORS
 
 B<Current maintainer>: Ricardo Signes C<rjbs@cpan.org>
 
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
+Adam Kennedy E<lt>adamk@cpan.orgE<gt> wrote L<Email::Stuff>, from which the
+great majority of the L<Email::Stuffer> code is taken, whole cloth.
 
 =head1 SEE ALSO
 
-L<Email::MIME>, L<Email::Send>, L<http://ali.as/>
+L<Email::MIME>, L<Email::Sender>, L<http://ali.as/>
 
 =head1 COPYRIGHT
 
-Copyright 2004 - 2008 Adam Kennedy.
+Copyright 2004 - 2013 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
