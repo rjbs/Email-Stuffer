@@ -578,6 +578,32 @@ sub as_string {
 
 Sends the email via L<Email::Sender::Simple>.
 
+On failure, returns false.
+
+=cut
+
+sub send {
+	my $self = shift;
+	my $arg  = shift;
+	my $email = $self->email or return undef;
+
+	my $transport = $self->{transport};
+
+	Email::Sender::Simple->try_to_send(
+	  $email,
+	  {
+      ($transport ? (transport => $transport) : ()),
+      $arg ? %$arg : (),
+    },
+  );
+}
+
+=head2 send_or_die
+
+Sends the email via L<Email::Sender::Simple>.
+
+On failure, throws an exception.
+
 =cut
 
 sub send {
