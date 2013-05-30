@@ -459,7 +459,7 @@ sub _slurp {
 
 =head2 transport
 
-  $stuffer->transport( $moniker, \%options )
+  $stuffer->transport( $moniker, @options )
 
 or
 
@@ -486,11 +486,11 @@ sub transport {
 		if ( _INSTANCEDOES($_[0], 'Email::Sender::Transport') ) {
 			$self->{transport} = shift;
 		} else {
-		  my ($moniker, $arg) = @_;
+		  my ($moniker, @arg) = @_;
 		  my $class = $moniker =~ s/\A=//
 		            ? $moniker
 		            : "Email::Sender::Transport::$moniker";
-			my $transport = $class->new($arg);
+			my $transport = $class->new(@arg);
 			$self->{transport} = $transport;
 		}
 	}
