@@ -173,10 +173,7 @@ use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
 use prefork 'File::Type';
 
-use vars qw{$VERSION};
-BEGIN {
-	$VERSION = '2.102';
-}
+our $VERSION = '0.001';
 
 #####################################################################
 # Constructor and Accessors

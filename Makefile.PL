@@ -1,17 +1,26 @@
-use inc::Module::Install;
+use strict;
+use warnings;
+use ExtUtils::MakeMaker;
 
-name           'Email-Stuff';
-all_from       'lib/Email/Stuff.pm';
-requires       'Carp'                   => 0;
-requires       'File::Basename'         => 0;
-requires       'prefork'                => '1.01';
-requires       'Params::Util'           => '0.23';
-requires       'Email::Simple'          => '1.998';
-requires       'Email::MIME'            => '1.901';
-requires       'Email::Send'            => '2.185';
-requires       'File::Type'             => '0.22';
-test_requires 'Test::More'             => '0.47';
-test_requires 'File::Spec'             => '0.80';
-test_requires 'Email::Send::Test'      => '2.04';
+use 5.008;
 
-WriteAll;
+WriteMakefile(
+  NAME          => 'Email::Stuffer',
+  VERSION_FROM  => 'lib/Email/Stuffer.pm',
+  LICENSE       => 'perl',
+  PREREQ_PM => {
+    'Carp'           => 0,
+    'File::Basename' => 0,
+    'prefork'        => '1.01',
+    'Params::Util'   => '0.23',
+    'Email::Simple'  => '1.998',
+    'Email::MIME'    => '1.901',
+    'Email::Sender'  => '1.300000',
+    'File::Type'     => '0.22',
+  },
+  TEST_REQUIRES => {
+    'Test::More' => '0.47',
+    'File::Spec' => '0.80',
+  }
+);
+
