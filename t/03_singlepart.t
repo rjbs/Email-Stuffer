@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Load test the Email::Stuff module
+# Load test the Email::Stuffer module
 
 # use utf8;
 use strict;
@@ -17,7 +17,7 @@ BEGIN {
 }
 
 use Test::More qw[no_plan];
-use Email::Stuff;
+use Email::Stuffer;
 
 
 #####################################################################
@@ -25,7 +25,7 @@ use Email::Stuff;
 
 # Single part text/plain
 use Email::Send::Test ();
-my $rv = Email::Stuff->from       ( 'Adam Kennedy<adam@phase-n.com>')
+my $rv = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>')
                      ->to         ( 'adam@phase-n.com'              )
                      ->subject    ( 'Hello To:!'                    )
                      ->text_body  ( 'I am an emáil'                 )
@@ -49,7 +49,7 @@ like(
 
 # Single part html/text
 use Email::Send::Test ();
-my $rv2 = Email::Stuff->from       ( 'Adam Kennedy<adam@phase-n.com>')
+my $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>')
                       ->to         ( 'adam@phase-n.com'              )
                       ->subject    ( 'Hello To:!'                    )
                       ->html_body  ( '<b>I am a html email</b>'      )

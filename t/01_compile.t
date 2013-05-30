@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Load test the Email::Stuff module
+# Load test the Email::Stuffer module
 
 use strict;
 use lib ();
@@ -21,6 +21,6 @@ BEGIN {
 # Does everything load?
 use Test::More 'tests' => 2;
 ok( $] >= 5.005, 'Your perl is new enough' );
-use_ok( 'Email::Stuff' );
+use_ok( 'Email::Stuffer' );
 
 1;

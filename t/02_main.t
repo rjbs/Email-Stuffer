@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Load test the Email::Stuff module
+# Load test the Email::Stuffer module
 
 use strict;
 use lib ();
@@ -15,7 +15,7 @@ BEGIN {
 }
 
 use Test::More tests => 35;
-use Email::Stuff;
+use Email::Stuffer;
 
 my $TEST_GIF = $ENV{HARNESS_ACTIVE}
 	? catfile( 't', 'data', 'paypal.gif' )
@@ -30,9 +30,9 @@ sub string_ok {
 
 sub stuff_ok {
 	my $stuff = shift;
-	isa_ok( $stuff,        'Email::Stuff' );
+	isa_ok( $stuff,        'Email::Stuffer' );
 	isa_ok( $stuff->email, 'Email::MIME' );
-	string_ok( $stuff->as_string, 'Got a non-null string for Email::Stuff->as_string' );
+	string_ok( $stuff->as_string, 'Got a non-null string for Email::Stuffer->as_string' );
 }
 
 
@@ -42,29 +42,29 @@ sub stuff_ok {
 #####################################################################
 # Main Tests
 
-# Create a new Email::Stuff object
-my $Stuff = Email::Stuff->new;
-stuff_ok( $Stuff );
-my @headers = $Stuff->headers;
+# Create a new Email::Stuffer object
+my $Stuffer = Email::Stuffer->new;
+stuff_ok( $Stuffer );
+my @headers = $Stuffer->headers;
 ok( scalar(@headers), 'Even the default object has headers' );
 
 # Set a To name
-my $rv = $Stuff->to('adam@ali.as');
-stuff_ok( $Stuff );
+my $rv = $Stuffer->to('adam@ali.as');
+stuff_ok( $Stuffer );
 stuff_ok( $rv    );
-is( $Stuff->as_string, $rv->as_string, '->To returns the same object' );
-is( $Stuff->email->header('To'), 'adam@ali.as', '->To sets To header' );
+is( $Stuffer->as_string, $rv->as_string, '->To returns the same object' );
+is( $Stuffer->email->header('To'), 'adam@ali.as', '->To sets To header' );
 
 # Set a From name
-$rv = $Stuff->from('bob@ali.as');
-stuff_ok( $Stuff );
+$rv = $Stuffer->from('bob@ali.as');
+stuff_ok( $Stuffer );
 stuff_ok( $rv    );
-is( $Stuff->as_string, $rv->as_string, '->From returns the same object' );
-is( $Stuff->email->header('From'), 'bob@ali.as', '->From sets From header' );
+is( $Stuffer->as_string, $rv->as_string, '->From returns the same object' );
+is( $Stuffer->email->header('From'), 'bob@ali.as', '->From sets From header' );
 
 # More complex one
 use Email::Send::Test ();
-my $rv2 = Email::Stuff->from       ( 'Adam Kennedy<adam@phase-n.com>')
+my $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>')
                       ->to         ( 'adam@phase-n.com'              )
                       ->subject    ( 'Hello To:!'                    )
                       ->text_body  ( 'I am an email'                 )
@@ -82,7 +82,7 @@ like( $email, qr/paypal/,        'Email contains file name' );
 
 # attach_file content_type
 use Email::Send::Test ();
-$rv2 = Email::Stuff->from       ( 'Adam Kennedy<adam@phase-n.com>'        )
+$rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>'        )
                    ->to         ( 'adam@phase-n.com'                      )
                    ->subject    ( 'Hello To:!'                            )
                    ->text_body  ( 'I am an email'                         )
