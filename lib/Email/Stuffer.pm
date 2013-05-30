@@ -170,7 +170,7 @@ use File::Basename         ();
 use Params::Util           qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
 use Email::MIME::Creator   ();
-use Email::Sender          ();
+use Email::Sender::Simple  ();
 use prefork 'File::Type';
 
 use vars qw{$VERSION};
@@ -594,7 +594,7 @@ sub send {
 	  $email,
 	  {
       ($transport ? (transport => $transport) : ()),
-      %$arg,
+      $arg ? %$arg : (),
     },
   );
 }
