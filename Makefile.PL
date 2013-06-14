@@ -12,7 +12,7 @@ WriteMakefile(
     'Carp'           => 0,
     'File::Basename' => 0,
     'prefork'        => '1.01',
-    'Params::Util'   => '0.23',
+    'Params::Util'   => '1.05',
     'Email::Simple'  => '1.998',
     'Email::MIME'    => '1.901',
     'Email::Sender'  => '1.300000',
