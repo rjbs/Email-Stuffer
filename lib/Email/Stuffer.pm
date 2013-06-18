@@ -605,7 +605,7 @@ On failure, throws an exception.
 
 =cut
 
-sub send {
+sub send_or_die {
 	my $self = shift;
 	my $arg  = shift;
 	my $email = $self->email or return undef;
