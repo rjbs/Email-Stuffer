@@ -32,8 +32,7 @@ Email::Stuffer - A more casual approach to creating and sending Email:: emails
                 ->to       ('santa@northpole.org'              )
                 ->bcc      ('bunbun@sluggy.com'                )
                 ->text_body($body                              )
-                ->attach   (io('dead_bunbun_faked.gif')->all,
-                            filename => 'dead_bunbun_proof.gif')
+                ->attach_file('dead_bunbun_faked.gif'		   )
                 ->send;
 
 =head1 DESCRIPTION
@@ -474,7 +473,7 @@ C<Email::Sender::Transport::>.  In neither case will a module be
 automatically loaded.
 
 Alternatively, you can pass a complete transport object (which must be
-an L<Email::Send> object) and it will be used as is.
+an L<Email::Sender::Transport> object) and it will be used as is.
 
 =cut
 
