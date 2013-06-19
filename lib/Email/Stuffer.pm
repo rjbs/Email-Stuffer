@@ -473,7 +473,7 @@ C<Email::Sender::Transport::>.  In neither case will a module be
 automatically loaded.
 
 Alternatively, you can pass a complete transport object (which must be
-an L<Email::Send> object) and it will be used as is.
+an L<Email::Sender::Transport> object) and it will be used as is.
 
 =cut
 
