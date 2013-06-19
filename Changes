@@ -1,5 +1,14 @@
 Revision history for Perl extension Email::Stuffer
 
+{{$NEXT}}
+
+0.003     2013-06-18 23:36:39 America/New_York
+          correctly implement the send_or_die method (thanks, Ross Attrill!)
+
+          documentation corrections (thanks, Ross Attrill!)
+
+          repackage using Dist::Zilla
+
 0.001     2013-05-30
 
           first released, forked from Email::Stuff 2.102
