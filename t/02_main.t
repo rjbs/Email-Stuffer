@@ -69,7 +69,7 @@ $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>'        )
                      ->to         ( 'adam@phase-n.com'                      )
                      ->subject    ( 'Hello To:!'                            )
                      ->text_body  ( 'I am an email'                         )
-                     ->attach_file( 'README', content_type => 'text/plain'  )
+                     ->attach_file( 'dist.ini', content_type => 'text/plain')
                      ->transport  ( $test                                   )
                      ->send;
 ok( $rv2, 'Email sent ok' );
@@ -79,5 +79,5 @@ like( $email, qr/Adam Kennedy/,  'Email contains from name' );
 like( $email, qr/phase-n/,       'Email contains to string' );
 like( $email, qr/Hello/,         'Email contains subject string' );
 like( $email, qr/I am an email/, 'Email contains text_body' );
-like( $email, qr{Content-Type: text/plain; name="README"}, 'Email contains attachment content-Type' );
+like( $email, qr{Content-Type: text/plain; name="dist\.ini"}, 'Email contains attachment content-Type' );
 1;

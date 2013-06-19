@@ -1,8 +1,7 @@
+use strict;
+use warnings;
 package Email::Stuffer;
-
-=head1 NAME
-
-Email::Stuffer - A more casual approach to creating and sending Email:: emails
+# ABSTRACT: A more casual approach to creating and sending Email:: emails
 
 =head1 SYNOPSIS
 
@@ -177,7 +176,7 @@ our $VERSION = '0.001';
 #####################################################################
 # Constructor and Accessors
 
-=head2 new
+=method new
 
 Creates a new, empty, Email::Stuffer object.
 
@@ -202,7 +201,7 @@ sub _self {
 	ref($either) ? $either : $either->new;
 }
 
-=head2 header_names
+=method header_names
 
 Returns, as a list, all of the headers currently set for the Email
 For backwards compatibility, this method can also be called as B[headers].
@@ -217,7 +216,7 @@ sub headers {
 	shift()->{email}->header_names; ## This is now header_names, headers is depreciated
 }
 
-=head2 parts
+=method parts
 
 Returns, as a list, the L<Email::MIME> parts for the Email
 
@@ -234,7 +233,7 @@ sub parts {
 #####################################################################
 # Header Methods
 
-=head2 header $header => $value
+=method header $header => $value
 
 Adds a single named header to the email. Note I said B<add> not set,
 so you can just keep shoving the headers on. But of course, if you
@@ -248,7 +247,7 @@ sub header {
 	$self->{email}->header_str_set(ucfirst shift, shift) ? $self : undef;
 }
 
-=head2 to $address
+=method to $address
 
 Adds a To: header to the email
 
@@ -259,7 +258,7 @@ sub to {
 	$self->{email}->header_str_set(To => shift) ? $self : undef;
 }
 
-=head2 from $address
+=method from $address
 
 Adds (yes ADDS, you only do it once) a From: header to the email
 
@@ -270,7 +269,7 @@ sub from {
 	$self->{email}->header_str_set(From => shift) ? $self : undef;
 }
 
-=head2 cc $address
+=method cc $address
 
 Adds a Cc: header to the email
 
@@ -281,7 +280,7 @@ sub cc {
 	$self->{email}->header_str_set(Cc => shift) ? $self : undef;
 }
 
-=head2 bcc $address
+=method bcc $address
 
 Adds a Bcc: header to the email
 
@@ -292,7 +291,7 @@ sub bcc {
 	$self->{email}->header_str_set(Bcc => shift) ? $self : undef;
 }
 
-=head2 subject $text
+=method subject $text
 
 Adds a subject to the email
 
@@ -306,7 +305,7 @@ sub subject {
 #####################################################################
 # Body and Attachments
 
-=head2 text_body $body [, $header => $value, ... ]
+=method text_body $body [, $header => $value, ... ]
 
 Sets the text body of the email. Unless specified, all the appropriate
 headers are set for you. You may override any as needed. See
@@ -338,7 +337,7 @@ sub text_body {
 	$self;
 }
 
-=head2 html_body $body [, $header => $value, ... ]
+=method html_body $body [, $header => $value, ... ]
 
 Set the HTML body of the email. Unless specified, all the appropriate
 headers are set for you. You may override any as needed. See
@@ -369,7 +368,7 @@ sub html_body {
 	$self;
 }
 
-=head2 attach $contents [, $header => $value, ... ]
+=method attach $contents [, $header => $value, ... ]
 
 Adds an attachment to the email. The first argument is the file contents
 followed by (as for text_body and html_body) the list of headers to use.
@@ -409,7 +408,7 @@ sub attach {
 	$self;
 }
 
-=head2 attach_file $file [, $header => $value, ... ]
+=method attach_file $file [, $header => $value, ... ]
 
 Attachs a file that already exists on the filesystem to the email. 
 C<attach_file> will auto-detect the MIME type, and use the file's
@@ -456,7 +455,7 @@ sub _slurp {
 	\$source;
 }
 
-=head2 transport
+=method transport
 
   $stuffer->transport( $moniker, @options )
 
@@ -504,7 +503,7 @@ sub transport {
 #####################################################################
 # Output Methods
 
-=head2 email
+=method email
 
 Creates and returns the full L<Email::MIME> object for the email.
 
@@ -562,7 +561,7 @@ sub _transfer_headers {
         }
 }
 
-=head2 as_string
+=method as_string
 
 Returns the string form of the email. Identical to (and uses behind the
 scenes) Email::MIME-E<gt>as_string.
@@ -573,7 +572,7 @@ sub as_string {
 	shift()->email->as_string;
 }
 
-=head2 send
+=method send
 
 Sends the email via L<Email::Sender::Simple>.
 
@@ -597,7 +596,7 @@ sub send {
   );
 }
 
-=head2 send_or_die
+=method send_or_die
 
 Sends the email via L<Email::Sender::Simple>.
 
@@ -627,35 +626,13 @@ sub send_or_die {
 
 =head1 TO DO
 
-=over 4
-
-=item * Fix a number of bugs still likely to exist
-
-=item * Write more tests.
-
-=item * Add any additional small bit of automation that arn't too expensive
-
-=back
-
-=head1 AUTHORS
-
-B<Current maintainer>: Ricardo Signes C<rjbs@cpan.org>
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt> wrote L<Email::Stuff>, from which the
-great majority of the L<Email::Stuffer> code is taken, whole cloth.
+=for :list
+* Fix a number of bugs still likely to exist
+* Write more tests.
+* Add any additional small bit of automation that isn't too expensive
 
 =head1 SEE ALSO
 
 L<Email::MIME>, L<Email::Sender>, L<http://ali.as/>
-
-=head1 COPYRIGHT
-
-Copyright 2004 - 2013 Adam Kennedy.
-
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-The full text of the license can be found in the
-LICENSE file included with this module.
 
 =cut
