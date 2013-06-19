@@ -77,9 +77,7 @@ my $test = Email::Sender::Transport::Test->new;
   is( $test->delivery_count, 1, 'Sent one email' );
 }
 
-TODO:
 {
-  local $TODO = 'Cannot get this to die';
   my $fail_test = Email::Sender::Transport::TestFail->new();
   my $rv2 = eval {
     my $rv = Email::Stuffer->from   ( 'fault@example.com'             )
@@ -91,7 +89,9 @@ TODO:
     print "Fail rv: $rv";
     return $rv;
   };
-  is($rv2, undef,'died as expected');      # But it doesn't die
 
+  my $error = $@;
+  is($rv2, undef, 'died as expected');
+  isa_ok($error, 'Email::Sender::Failure');
 }
 
