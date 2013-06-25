@@ -1,6 +1,11 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+          replace File::Type with a much simpler and smaller-scale check
+          (thanks, tokuhirom!)
+
+          with File::Type gone, no need to use prefork anymore (thanks,
+          tokuhirom!)
 
 0.003     2013-06-18 23:36:39 America/New_York
           correctly implement the send_or_die method (thanks, Ross Attrill!)
