@@ -169,7 +169,6 @@ use Params::Util           qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
-use prefork 'File::Type';
 
 our $VERSION = '0.001';
 
@@ -377,6 +376,38 @@ to provide them anyway to be sure. Encoding is Base64 by default.
 
 =cut
 
+sub _detect_content_type {
+	my ($filename, $body) = @_;
+
+	if (defined($filename)) {
+		if ($filename =~ /\.([a-z]{3,4})\z/) {
+			my $content_type = {
+				'gif'  => 'image/gif',
+				'png'  => 'image/png',
+				'jpg'  => 'image/jpeg',
+				'jpeg' => 'image/jpeg',
+				'txt'  => 'text/plain',
+				'htm'  => 'text/html',
+				'html' => 'text/html',
+				'css'  => 'text/css',
+			}->{$1};
+			return $content_type if defined $content_type;
+		}
+	}
+	if ($body =~ /
+		\A(?:
+		    (GIF8)          # gif
+		  | (\xff\xd8)      # jpeg
+		  | (\x89PNG)       # png
+		)
+	/x) {
+		return 'image/gif'  if $1;
+		return 'image/jpeg' if $2;
+		return 'image/png'  if $3;
+	}
+	return 'application/octet-stream';
+}
+
 sub attach {
 	my $self = shift()->_self;
 	my $body = defined $_[0] ? shift : return undef;
@@ -389,8 +420,7 @@ sub attach {
 
 	# The more expensive defaults if needed
 	unless ( $attr{content_type} ) {
-		require File::Type;
-		$attr{content_type} = File::Type->checktype_contents($body);
+		$attr{content_type} = _detect_content_type($attr{filename}, $body);
 	}
 
 	### MORE?
