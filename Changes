@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+          fix version of Params::Util required
 
 0.004     2013-06-25 13:43:42 America/New_York
           replace File::Type with a much simpler and smaller-scale check

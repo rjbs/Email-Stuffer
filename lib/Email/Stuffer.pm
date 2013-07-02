@@ -165,7 +165,7 @@ use 5.005;
 use strict;
 use Carp                   ();
 use File::Basename         ();
-use Params::Util           qw(_INSTANCE _INSTANCEDOES);
+use Params::Util 1.05      qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
