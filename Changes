@@ -1,6 +1,8 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+
+0.006     2013-07-02 10:58:46 America/New_York
           fix stupid packaging error: $VERSION was wrong!
 
 0.005     2013-07-01 22:54:50 America/New_York
