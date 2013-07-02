@@ -170,8 +170,6 @@ use Email::MIME            ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
 
-our $VERSION = '0.001';
-
 #####################################################################
 # Constructor and Accessors
 

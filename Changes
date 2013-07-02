@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+          fix stupid packaging error: $VERSION was wrong!
 
 0.005     2013-07-01 22:54:50 America/New_York
           fix version of Params::Util required
