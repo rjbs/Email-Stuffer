@@ -252,7 +252,7 @@ Adds a To: header to the email
 
 sub to {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(To => @_) ? $self : undef;
+	$self->{email}->header_str_set(To => join(q{,}, @_)) ? $self : undef;
 }
 
 =method from $address
@@ -274,7 +274,7 @@ Adds a Cc: header to the email
 
 sub cc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Cc => @_) ? $self : undef;
+	$self->{email}->header_str_set(Cc => join(q{,}, @_)) ? $self : undef;
 }
 
 =method bcc $address
@@ -285,7 +285,7 @@ Adds a Bcc: header to the email
 
 sub bcc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Bcc => @_) ? $self : undef;
+	$self->{email}->header_str_set(Bcc => join(q{,}, @_)) ? $self : undef;
 }
 
 =method subject $text
