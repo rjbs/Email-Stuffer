@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 35;
+use Test::More tests => 59;
 use Email::Stuffer;
 
 my $TEST_GIF = catfile( 't', 'data', 'paypal.gif' );
@@ -44,6 +44,27 @@ stuff_ok( $Stuffer );
 stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->From returns the same object' );
 is( $Stuffer->email->header('From'), 'bob@ali.as', '->From sets From header' );
+
+# To allows multiple recipients
+$rv = $Stuffer->to('adam@ali.as', 'another@ali.as', 'bob@ali.as');
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->To (multiple) returns the same object' );
+is( $Stuffer->email->header('To'), 'adam@ali.as,another@ali.as,bob@ali.as', '->To (multiple) sets To header' );
+
+# Cc allows multiple recipients
+$rv = $Stuffer->cc('adam@ali.as', 'another@ali.as', 'bob@ali.as');
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->Cc (multiple) returns the same object' );
+is( $Stuffer->email->header('Cc'), 'adam@ali.as,another@ali.as,bob@ali.as', '->Cc (multiple) sets To header' );
+
+# Bcc allows multiple recipients
+$rv = $Stuffer->bcc('adam@ali.as', 'another@ali.as', 'bob@ali.as');
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->Bcc (multiple) returns the same object' );
+is( $Stuffer->email->header('Bcc'), 'adam@ali.as,another@ali.as,bob@ali.as', '->Bcc (multiple) sets To header' );
 
 # More complex one
 use Email::Sender::Transport::Test ();
