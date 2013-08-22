@@ -2,6 +2,10 @@ Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
 
+0.007     2013-08-22 17:26:45 America/New_York
+          allow ->to, ->cc, and ->bcc to take a list of addresses (thanks, Kris
+          Matthews!)
+
 0.006     2013-07-02 10:58:46 America/New_York
           fix stupid packaging error: $VERSION was wrong!
 
