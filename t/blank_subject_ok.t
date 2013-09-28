@@ -17,7 +17,7 @@ like(
     'matching subject header',
 );
 
-is($stuffer->subject(q{}), $stuffer, 'subect returned $self');
+is($stuffer->subject(q{}), $stuffer, 'subject returned $self');
 
 like(
     $stuffer->as_string,

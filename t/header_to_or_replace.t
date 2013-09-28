@@ -5,13 +5,12 @@ use warnings;
 use Test::Most;
 use Email::Stuffer;
 
-# verify that calling to(), from(), or any
-# method that uses Email::Simple::Header->header_str_set
+# verify that calling Email::Stuffer->header
 # actually replaces said header, rather than adds
 # a new one.
 
 my $stuffer = Email::Stuffer->new;
-$stuffer->to('foo@bar.net');
+$stuffer->header(to => 'foo@bar.net');
 
 # verify to header added
 like(
@@ -20,7 +19,7 @@ like(
     'matching to header',
 );
 
-$stuffer->to('somewhere@else.net');
+$stuffer->header(to => 'somewhere@else.net');
 
 # verify old to header gone
 unlike(
