@@ -232,10 +232,8 @@ sub parts {
 
 =method header $header => $value
 
-Adds a single named header to the email. Note I said B<add> not set,
-so you can just keep shoving the headers on. But of course, if you
-want to use to overwrite a header, you're stuffed. Because B<this module
-is not for changing emails, just throwing stuff together and sending it.>
+Sets a named header in the email. Multiple calls with the same $header
+will overwrite previous calls $value.
 
 =cut
 
@@ -246,7 +244,7 @@ sub header {
 
 =method to $address
 
-Adds a To: header to the email
+Sets the To: header in the email
 
 =cut
 
@@ -257,7 +255,7 @@ sub to {
 
 =method from $address
 
-Adds (yes ADDS, you only do it once) a From: header to the email
+Sets the From: header in the email
 
 =cut
 
@@ -268,7 +266,7 @@ sub from {
 
 =method cc $address
 
-Adds a Cc: header to the email
+Sets the Cc: header in the email
 
 =cut
 
@@ -279,7 +277,7 @@ sub cc {
 
 =method bcc $address
 
-Adds a Bcc: header to the email
+Sets the Bcc: header in the email
 
 =cut
 
@@ -290,13 +288,14 @@ sub bcc {
 
 =method subject $text
 
-Adds a subject to the email
+Sets the Subject: header in the email
 
 =cut
 
 sub subject {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Subject => shift) ? $self : undef;
+	$self->{email}->header_str_set(Subject => shift);
+    return $self;
 }
 
 #####################################################################
