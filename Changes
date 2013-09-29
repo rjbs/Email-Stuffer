@@ -1,9 +1,13 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - correct the documentation of header-setting methods to match their
+          behavior (since Email::Stuff's first release)
+
+        - do not break the method chain if a header is set to empty string
 
 0.007     2013-08-22 17:26:45 America/New_York
-          allow ->to, ->cc, and ->bcc to take a list of addresses (thanks, Kris
+        - allow ->to, ->cc, and ->bcc to take a list of addresses (thanks, Kris
           Matthews!)
 
 0.006     2013-07-02 10:58:46 America/New_York
@@ -13,7 +17,7 @@ Revision history for Perl extension Email::Stuffer
           fix version of Params::Util required
 
 0.004     2013-06-25 13:43:42 America/New_York
-          replace File::Type with a much simpler and smaller-scale check
+        - replace File::Type with a much simpler and smaller-scale check
           (thanks, tokuhirom!)
 
           with File::Type gone, no need to use prefork anymore (thanks,
