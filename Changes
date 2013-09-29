@@ -1,10 +1,13 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+
+0.008     2013-09-29 15:47:10 America/New_York
         - correct the documentation of header-setting methods to match their
           behavior (since Email::Stuff's first release)
 
-        - do not break the method chain if a header is set to empty string
+        - add tests to show we can set an empty subject through ->header
+          but not through ->subject
 
 0.007     2013-08-22 17:26:45 America/New_York
         - allow ->to, ->cc, and ->bcc to take a list of addresses (thanks, Kris
