@@ -239,7 +239,9 @@ will overwrite previous calls $value.
 
 sub header {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(ucfirst shift, shift) ? $self : undef;
+	return unless @_;
+	$self->{email}->header_str_set(ucfirst shift, shift);
+	return $self;
 }
 
 =method to $address
@@ -294,8 +296,7 @@ Sets the Subject: header in the email
 
 sub subject {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Subject => shift);
-    return $self;
+	$self->{email}->header_str_set(Subject => shift) ? $self : undef;
 }
 
 #####################################################################

@@ -17,7 +17,17 @@ like(
   'matching subject header',
 );
 
-is($stuffer->subject(q{}), $stuffer, 'subject returned $self');
+is($stuffer->subject(q{}), undef, 'subject(q{}) returned udnef');
+
+is($stuffer->subject('Subject goes here'), $stuffer, 'subject returned $self');
+
+like(
+  $stuffer->as_string,
+  qr/^Subject:\sSubject\sgoes\shere\x0d?\x0a/mx,
+  'matching subject header',
+);
+
+is($stuffer->header(Subject => q{}), $stuffer, 'header(subject =>q{}) -> $self');
 
 like(
   $stuffer->as_string,
