@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - update required version of Email::Stuffer
 
 0.008     2013-09-29 15:47:10 America/New_York
         - correct the documentation of header-setting methods to match their

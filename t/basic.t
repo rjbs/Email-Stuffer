@@ -67,7 +67,7 @@ is( $Stuffer->as_string, $rv->as_string, '->Bcc (multiple) returns the same obje
 is( $Stuffer->email->header('Bcc'), 'adam@ali.as, another@ali.as, bob@ali.as', '->Bcc (multiple) sets To header' );
 
 # More complex one
-use Email::Sender::Transport::Test ();
+use Email::Sender::Transport::Test 0.120000 (); # ->delivery_count, etc.
 my $test = Email::Sender::Transport::Test->new;
 my $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>')
                         ->to         ( 'adam@phase-n.com'              )
