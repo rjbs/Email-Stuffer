@@ -1,6 +1,8 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+
+0.009     2013-11-24 22:40:49 America/New_York
         - update required version of Email::Stuffer
 
 0.008     2013-09-29 15:47:10 America/New_York
