@@ -3,7 +3,8 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 59;
+use Test::More tests => 62;
+use Test::Exception;
 use Email::Stuffer;
 
 my $TEST_GIF = catfile( 't', 'data', 'paypal.gif' );
@@ -101,4 +102,19 @@ like( $email, qr/phase-n/,       'Email contains to string' );
 like( $email, qr/Hello/,         'Email contains subject string' );
 like( $email, qr/I am an email/, 'Email contains text_body' );
 like( $email, qr{Content-Type: text/plain; name="dist\.ini"}, 'Email contains attachment content-Type' );
+
+# attach_file with no such file
+throws_ok { Email::Stuffer->attach_file( 'no such file' ) }
+    qr/No such file 'no such file'/,
+    'attach_file croaks when passed a bad file name';
+
+# attach_file with a non-file object
+throws_ok { Email::Stuffer->attach_file( $rv2 ) }
+    qr/Expected a file name or an IO::All::File derivative, got Email::Sender::Success/,
+    'attach_file croaks when passed a bad reference';
+
+# _slurp croaks when passed a bad file
+throws_ok { Email::Stuffer->_slurp( 'no such file' ) }
+    qr/No such file or directory at/,
+    '_slurp croaks when passed a bad filename';
 1;

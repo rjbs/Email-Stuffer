@@ -163,7 +163,7 @@ B<are not> chainable.
 
 use 5.005;
 use strict;
-use Carp                   ();
+use Carp                   qw(croak);
 use File::Basename         ();
 use Params::Util 1.05      qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
@@ -442,7 +442,7 @@ current name when attaching.
 
 sub attach_file {
 	my $self = shift;
-  my $body_arg = shift;
+	my $body_arg = shift;
 	my $name = undef;
 	my $body = undef;
 
@@ -452,17 +452,18 @@ sub attach_file {
 		$body = $body_arg->all;
 
 	# Support file names
-	} elsif ( defined $body_arg and -f $body_arg ) {
+	} elsif ( defined $body_arg and Params::Util::_STRING($body_arg) ) {
+		croak "No such file '$body_arg'" unless -f $body_arg;
 		$name = $body_arg;
-		$body = _slurp( $body_arg ) or return undef;
+		$body = _slurp( $body_arg );
 
 	# That's it
 	} else {
-		return undef;
+		croak "Expected a file name or an IO::All::File derivative, got " . ref($body_arg) . "\n";
 	}
 
 	# Clean the file name
-	$name = File::Basename::basename($name) or return undef;
+	$name = File::Basename::basename($name) or croak $@;
 
 	# Now attach as normal
 	$self->attach( $body, name => $name, filename => $name, @_ );
@@ -473,9 +474,9 @@ sub _slurp {
 	my $file = shift;
 	local $/ = undef;
 	local *SLURP;
-	open( SLURP, "<$file" ) or return undef;
+	open( SLURP, "<$file" ) or croak $!;
 	my $source = <SLURP>;
-	close( SLURP ) or return undef;
+	close( SLURP ) or croak $!;
 	\$source;
 }
 
