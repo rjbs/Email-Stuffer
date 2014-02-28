@@ -464,7 +464,9 @@ sub attach_file {
 	}
 
 	# Clean the file name
-	$name = File::Basename::basename($name) or croak $@;
+	$name = File::Basename::basename($name);
+
+	croak("basename somehow returned undef") unless defined $name;
 
 	# Now attach as normal
 	$self->attach( $body, name => $name, filename => $name, @_ );
