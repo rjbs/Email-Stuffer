@@ -459,7 +459,8 @@ sub attach_file {
 
 	# That's it
 	} else {
-		croak "Expected a file name or an IO::All::File derivative, got " . ref($body_arg) . "\n";
+		my $type = ref($body_arg) || "<$body_arg>";
+		croak "Expected a file name or an IO::All::File derivative, got $type";
 	}
 
 	# Clean the file name
