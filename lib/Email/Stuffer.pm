@@ -476,10 +476,10 @@ sub attach_file {
 sub _slurp {
 	my $file = shift;
 	local $/ = undef;
-	local *SLURP;
-	open( SLURP, "<$file" ) or croak $!;
-	my $source = <SLURP>;
-	close( SLURP ) or croak $!;
+
+	open my $slurp, '<:raw', $file or croak("error opening $file: $!");
+	my $source = <$slurp>;
+	close( $slurp ) or croak "error after slurping $file: $!";
 	\$source;
 }
 
