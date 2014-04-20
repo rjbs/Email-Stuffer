@@ -27,11 +27,11 @@ package Email::Stuffer;
   AMBUSH_READY
   
   # Create and send the email in one shot
-  Email::Stuffer->from     ('cpan@ali.as'                      )
-                ->to       ('santa@northpole.org'              )
-                ->bcc      ('bunbun@sluggy.com'                )
-                ->text_body($body                              )
-                ->attach_file('dead_bunbun_faked.gif'		   )
+  Email::Stuffer->from     ('cpan@ali.as'             )
+                ->to       ('santa@northpole.org'     )
+                ->bcc      ('bunbun@sluggy.com'       )
+                ->text_body($body                     )
+                ->attach_file('dead_bunbun_faked.gif' )
                 ->send;
 
 =head1 DESCRIPTION
