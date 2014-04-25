@@ -2,6 +2,9 @@ Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
 
+0.010     2014-04-25 10:24:49-04:00 America/New_York (TRIAL RELEASE)
+        - in case of failure, throw exceptions rather than returning undef
+
 0.009     2013-11-24 22:40:49 America/New_York
         - update required version of Email::Stuffer
 
