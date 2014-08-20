@@ -384,6 +384,7 @@ sub _detect_content_type {
 				'htm'  => 'text/html',
 				'html' => 'text/html',
 				'css'  => 'text/css',
+				'wav'  => 'audio/wav',
 			}->{$1};
 			return $content_type if defined $content_type;
 		}
