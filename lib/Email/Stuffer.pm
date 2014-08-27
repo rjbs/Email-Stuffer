@@ -516,6 +516,7 @@ sub transport {
 		  my $class = $moniker =~ s/\A=//
 		            ? $moniker
 		            : "Email::Sender::Transport::$moniker";
+			eval "require $class" or croak $@;
 			my $transport = $class->new(@arg);
 			$self->{transport} = $transport;
 		}
