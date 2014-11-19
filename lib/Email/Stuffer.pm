@@ -480,6 +480,7 @@ sub attach_file {
 
 	# Support IO::All::File arguments
 	if ( Params::Util::_INSTANCE($body_arg, 'IO::All::File') ) {
+		$body_arg->binmode;
 		$name = $body_arg->name;
 		$body = $body_arg->all;
 
