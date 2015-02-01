@@ -384,6 +384,7 @@ sub _detect_content_type {
 				'htm'  => 'text/html',
 				'html' => 'text/html',
 				'css'  => 'text/css',
+				'pdf'  => 'application/pdf',
 			}->{$1};
 			return $content_type if defined $content_type;
 		}
@@ -398,6 +399,9 @@ sub _detect_content_type {
 		return 'image/gif'  if $1;
 		return 'image/jpeg' if $2;
 		return 'image/png'  if $3;
+	}
+	elsif ($body =~ /\A\%PDF-/) {
+		return 'application/pdf';
 	}
 	return 'application/octet-stream';
 }
