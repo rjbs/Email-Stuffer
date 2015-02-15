@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - autodetect PDF filetype (thanks, mannih)
 
 0.010     2014-04-25 10:24:49-04:00 America/New_York (TRIAL RELEASE)
         - in case of failure, throw exceptions rather than returning undef
