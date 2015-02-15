@@ -394,14 +394,13 @@ sub _detect_content_type {
 		    (GIF8)          # gif
 		  | (\xff\xd8)      # jpeg
 		  | (\x89PNG)       # png
+		  | (%PDF-)         # pdf
 		)
 	/x) {
 		return 'image/gif'  if $1;
 		return 'image/jpeg' if $2;
 		return 'image/png'  if $3;
-	}
-	elsif ($body =~ /\A\%PDF-/) {
-		return 'application/pdf';
+		return 'application/pdf' if $4;
 	}
 	return 'application/octet-stream';
 }
