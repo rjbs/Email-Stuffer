@@ -115,10 +115,16 @@ like $error,
     qr/Expected a file name or an IO::All::File derivative, got Email::Sender::Success/,
     'attach_file croaks when passed a bad reference';
 
+my $enoent = do {
+  use Errno 'ENOENT';
+  local $! = ENOENT;
+  "$!";
+};
+
 # _slurp croaks when passed a bad file
-$error = exception { Email::Stuffer->_slurp( 'no such file' ) };
+$error = exception { Email::Stuffer::_slurp( 'no such file' ) };
 like $error,
-    qr/No such file or directory at/,
+    qr/\Aerror opening no such file: \Q$enoent/,
     '_slurp croaks when passed a bad filename';
 
 1;
