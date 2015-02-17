@@ -180,8 +180,9 @@ Creates a new, empty, Email::Stuffer object.
 =cut
 
 sub new {
-	my $class = ref $_[0] || $_[0];
-
+	my $proto = shift;
+	my $class = ref $proto || $proto;
+	my %args = (ref($_[0]) && ref($_[0]) eq 'HASH') ? %$_[0] : @_;
 	my $self = bless {
 		parts      => [],
 		email      => Email::MIME->create(
@@ -189,6 +190,12 @@ sub new {
 			parts  => [],
 			),
 		}, $class;
+
+	foreach my $init_arg (keys %args) {
+		if($self->can($init_arg)) {
+			$self->$init_arg($args{$init_arg});
+		}
+	}
 
 	$self;
 }
