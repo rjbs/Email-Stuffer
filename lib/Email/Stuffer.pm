@@ -374,7 +374,7 @@ sub _detect_content_type {
 	my ($filename, $body) = @_;
 
 	if (defined($filename)) {
-		if ($filename =~ /\.([a-z]{3,4})\z/) {
+		if ($filename =~ /\.([a-zA-Z]{3,4})\z/) {
 			my $content_type = {
 				'gif'  => 'image/gif',
 				'png'  => 'image/png',
@@ -386,7 +386,7 @@ sub _detect_content_type {
 				'css'  => 'text/css',
 				'pdf'  => 'application/pdf',
 				'wav'  => 'audio/wav',
-			}->{$1};
+			}->{lc($1)};
 			return $content_type if defined $content_type;
 		}
 	}
