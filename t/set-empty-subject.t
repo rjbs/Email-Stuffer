@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most;
+use Test::More;
 use Email::Stuffer;
 
 # Verify subject() always returns $self

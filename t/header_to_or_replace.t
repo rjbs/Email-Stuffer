@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most;
+use Test::More;
 use Email::Stuffer;
 
 # verify that calling Email::Stuffer->header
