@@ -2,6 +2,11 @@ Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
 
+0.013     2016-04-08 20:34:49-04:00 America/New_York
+        - allow mime-type picking by filename to work when the filename
+          extension is not all lowercase (thanks, Chase Whitener)
+        - remove Test::Most; Test::More is enough Test for us
+
 0.012     2015-02-15 20:01:01-05:00 America/New_York
         - test for ENOENT text based on platform under test, not fixed string
 
