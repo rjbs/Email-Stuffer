@@ -17,7 +17,7 @@ like(
   'matching subject header',
 );
 
-is($stuffer->subject(q{}), undef, 'subject(q{}) returned udnef');
+is($stuffer->subject(q{}), $stuffer, 'subject(q{}) returned $self');
 
 is($stuffer->subject('Subject goes here'), $stuffer, 'subject returned $self');
 

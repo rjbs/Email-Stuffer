@@ -276,7 +276,9 @@ Sets the To: header in the email
 
 sub to {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(To => join(q{, }, @_)) ? $self : undef;
+	Carp::croak("to is a required field") unless defined $_[0];
+	$self->{email}->header_str_set(To => join(q{, }, @_));
+	return $self;
 }
 
 =method from $address
@@ -287,7 +289,9 @@ Sets the From: header in the email
 
 sub from {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(From => shift) ? $self : undef;
+	Carp::croak("from is a required field") unless defined $_[0];
+	$self->{email}->header_str_set(From => shift);
+	return $self;
 }
 
 =method cc $address
@@ -298,7 +302,8 @@ Sets the Cc: header in the email
 
 sub cc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Cc => join(q{, }, @_)) ? $self : undef;
+	$self->{email}->header_str_set(Cc => join(q{, }, @_));
+	return $self;
 }
 
 =method bcc $address
@@ -309,7 +314,8 @@ Sets the Bcc: header in the email
 
 sub bcc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Bcc => join(q{, }, @_)) ? $self : undef;
+	$self->{email}->header_str_set(Bcc => join(q{, }, @_));
+	return $self;
 }
 
 =method subject $text
@@ -320,7 +326,9 @@ Sets the Subject: header in the email
 
 sub subject {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Subject => shift) ? $self : undef;
+	Carp::croak("subject is a required field") unless defined $_[0];
+	$self->{email}->header_str_set(Subject => shift);
+	return $self;
 }
 
 #####################################################################
