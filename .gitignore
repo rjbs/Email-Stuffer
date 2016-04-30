@@ -1,2 +1,5 @@
 .build
 Email-Stuffer-*
+t/data/acid.bin
+
+.gitnxtver_cache
