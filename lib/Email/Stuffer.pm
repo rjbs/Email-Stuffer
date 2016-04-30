@@ -169,6 +169,7 @@ use Params::Util 1.05      qw(_INSTANCE _INSTANCEDOES);
 use Email::MIME            ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
+use Module::Runtime        qw(require_module);
 
 #####################################################################
 # Constructor and Accessors
@@ -547,6 +548,7 @@ sub transport {
 		  my $class = $moniker =~ s/\A=//
 		            ? $moniker
 		            : "Email::Sender::Transport::$moniker";
+		  require_module($class);
 			my $transport = $class->new(@arg);
 			$self->{transport} = $transport;
 		}
