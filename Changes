@@ -1,6 +1,8 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - you can now pass (some) properties of the email to the ->new
+          method (thanks, John Napiorkowski)
 
 0.013     2016-04-08 20:34:49-04:00 America/New_York
         - allow mime-type picking by filename to work when the filename
