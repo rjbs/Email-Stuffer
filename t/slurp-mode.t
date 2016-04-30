@@ -1,10 +1,16 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 3;
+use Test::More;
 use File::Spec::Functions ':ALL';
-use IO::All; # should skip test if not found
 use Email::Stuffer;
+
+if (! eval "require IO::All") {
+  plan skip_all => "this test requires IO::All";
+}
+
+sub io;
+IO::All->import('io');
 
 # sadly this is only a windows test
 my $true_data = "\r\n\n\n\r\n";
@@ -23,3 +29,5 @@ my $mail = Email::Stuffer->from('cpan@example.com')
    ->email;
 is(0+$mail->parts, 2, 'all parts found');
 ok([$mail->parts]->[1]->body eq $true_data, 'not corrupt');
+
+done_testing;
