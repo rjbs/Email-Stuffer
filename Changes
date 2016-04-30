@@ -1,6 +1,8 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+
+0.014     2016-04-30 19:28:26-04:00 America/New_York
         - you can now pass (some) properties of the email to the ->new
           method (thanks, John Napiorkowski)
         - attachments provided via IO::All get a binmode now
