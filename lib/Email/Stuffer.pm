@@ -177,24 +177,44 @@ use Email::Sender::Simple  ();
 
 Creates a new, empty, Email::Stuffer object.
 
+You can pass a hashref of properties to set, including:
+
+=for :list
+* to
+* from
+* cc
+* bcc
+* subject
+* text_body
+* html_body
+* transport
+
 =cut
 
+my %IS_INIT_ARG = map {; $_ => 1 } qw(
+  to from cc bcc subject text_body html_body transport
+);
+
 sub new {
-	my $proto = shift;
-	my $class = ref $proto || $proto;
-	my %args = (ref($_[0]) && ref($_[0]) eq 'HASH') ? %$_[0] : @_;
+	Carp::croak("new method called on Email::Stuffer instance") if ref $_[0];
+
+	my ($class, $arg) = @_;
+
 	my $self = bless {
 		parts      => [],
 		email      => Email::MIME->create(
 			header => [],
 			parts  => [],
-			),
-		}, $class;
+    ),
+  }, $class;
 
-	foreach my $init_arg (keys %args) {
-		if($self->can($init_arg)) {
-			$self->$init_arg($args{$init_arg});
-		}
+  my @init_args = keys %{ $arg || {} };
+  if (my @bogus = grep {; ! $IS_INIT_ARG{$_} } @init_args) {
+    Carp::croak("illegal arguments to Email::Stuffer->new: @bogus");
+  }
+
+	for my $init_arg (@init_args) {
+    $self->$init_arg($arg->{$init_arg});
 	}
 
 	$self;
