@@ -420,6 +420,7 @@ sub _detect_content_type {
 				'htm'  => 'text/html',
 				'html' => 'text/html',
 				'css'  => 'text/css',
+				'csv'  => 'text/csv',
 				'pdf'  => 'application/pdf',
 				'wav'  => 'audio/wav',
 			}->{lc($1)};
