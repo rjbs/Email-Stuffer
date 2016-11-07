@@ -170,6 +170,7 @@ use Email::MIME 1.920      ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
 use Module::Runtime        qw(require_module);
+use Net::IDN::Encode       qw(email_to_ascii);
 
 #####################################################################
 # Constructor and Accessors
@@ -277,7 +278,7 @@ Sets the To: header in the email
 sub to {
 	my $self = shift()->_self;
 	Carp::croak("to is a required field") unless defined $_[0];
-	$self->{email}->header_str_set(To => join(q{, }, @_));
+	$self->{email}->header_str_set(To => join(q{, }, map { email_to_ascii $_ } @_));
 	return $self;
 }
 
@@ -290,7 +291,7 @@ Sets the From: header in the email
 sub from {
 	my $self = shift()->_self;
 	Carp::croak("from is a required field") unless defined $_[0];
-	$self->{email}->header_str_set(From => shift);
+	$self->{email}->header_str_set(From => email_to_ascii shift);
 	return $self;
 }
 
@@ -302,7 +303,7 @@ Sets the Cc: header in the email
 
 sub cc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Cc => join(q{, }, @_));
+	$self->{email}->header_str_set(Cc => join(q{, }, map { email_to_ascii $_ } @_));
 	return $self;
 }
 
@@ -314,7 +315,7 @@ Sets the Bcc: header in the email
 
 sub bcc {
 	my $self = shift()->_self;
-	$self->{email}->header_str_set(Bcc => join(q{, }, @_));
+	$self->{email}->header_str_set(Bcc => join(q{, }, map { email_to_ascii $_ } @_));
 	return $self;
 }
 
