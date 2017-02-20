@@ -3,7 +3,8 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 65;
+use Test::More;
+
 use Test::Fatal;
 use Email::Stuffer;
 
@@ -85,6 +86,7 @@ stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->Bcc (multiple) returns the same object' );
 is( $Stuffer->email->header('Bcc'), 'adam@ali.as, another@ali.as, bob@ali.as', '->Bcc (multiple) sets To header' );
 
+
 $error = exception {
   $Stuffer->bcc([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ])
 };
@@ -93,6 +95,13 @@ like(
   qr/list of bcc headers contains unblessed ref/,
   'bcc croaks when passed a reference',
 );
+
+# Set a Reply-To address
+$rv = $Stuffer->reply_to('sue@ali.as');
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->reply_to returns the same object' );
+is( $Stuffer->email->header('Reply-To'), 'sue@ali.as', '->reply_to sets Reply-To header' );
 
 # More complex one
 use Email::Sender::Transport::Test 0.120000 (); # ->delivery_count, etc.
@@ -153,5 +162,7 @@ $error = exception { Email::Stuffer::_slurp( 'no such file' ) };
 like $error,
     qr/\Aerror opening no such file: \Q$enoent/,
     '_slurp croaks when passed a bad filename';
+
+done_testing;
 
 1;

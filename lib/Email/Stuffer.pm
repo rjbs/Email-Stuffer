@@ -195,7 +195,7 @@ You can pass a hashref of properties to set, including:
 =cut
 
 my %IS_INIT_ARG = map {; $_ => 1 } qw(
-  to from cc bcc subject text_body html_body transport
+  to from cc bcc reply_to subject text_body html_body transport
 );
 
 sub new {
@@ -309,6 +309,20 @@ sub from {
   $self->_assert_addr_list_ok(from => 0 => \@_);
   Carp::croak("only one address is allowed in the from header") if @_ > 1;
   $self->{email}->header_str_set(From => shift);
+  return $self;
+}
+
+=method reply_to $address
+
+Sets the Reply-To: header in the email
+
+=cut
+
+sub reply_to {
+  my $self = shift()->_self;
+  $self->_assert_addr_list_ok('reply-to' => 0 => \@_);
+  Carp::croak("only one address is allowed in the reply-to header") if @_ > 1;
+  $self->{email}->header_str_set('Reply-To' => shift);
   return $self;
 }
 
