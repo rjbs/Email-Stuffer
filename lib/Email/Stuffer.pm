@@ -193,7 +193,7 @@ You can pass a hashref of properties to set, including:
 =cut
 
 my %IS_INIT_ARG = map {; $_ => 1 } qw(
-  to from cc bcc subject text_body html_body transport
+  to from cc bcc reply_to subject text_body html_body transport
 );
 
 sub new {
@@ -291,6 +291,18 @@ sub from {
 	my $self = shift()->_self;
 	Carp::croak("from is a required field") unless defined $_[0];
 	$self->{email}->header_str_set(From => shift);
+	return $self;
+}
+
+=method reply_to $address
+
+Sets the Reply-To: header in the email
+
+=cut
+
+sub reply_to {
+	my $self = shift()->_self;
+	$self->{email}->header_str_set('Reply-To' => shift);
 	return $self;
 }
 

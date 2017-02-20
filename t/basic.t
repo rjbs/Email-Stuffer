@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 62;
+use Test::More tests => 70;
 use Test::Fatal;
 use Email::Stuffer;
 
@@ -66,6 +66,13 @@ stuff_ok( $Stuffer );
 stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->Bcc (multiple) returns the same object' );
 is( $Stuffer->email->header('Bcc'), 'adam@ali.as, another@ali.as, bob@ali.as', '->Bcc (multiple) sets To header' );
+
+# Set a Reply-To address
+$rv = $Stuffer->reply_to('sue@ali.as');
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->reply_to returns the same object' );
+is( $Stuffer->email->header('Reply-To'), 'sue@ali.as', '->reply_to sets Reply-To header' );
 
 # More complex one
 use Email::Sender::Transport::Test 0.120000 (); # ->delivery_count, etc.
