@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 62;
+use Test::More tests => 70;
 use Test::Fatal;
 use Email::Stuffer;
 
@@ -52,6 +52,13 @@ stuff_ok( $Stuffer );
 stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->To (multiple) returns the same object' );
 is( $Stuffer->email->header('To'), 'adam@ali.as, another@ali.as, bob@ali.as', '->To (multiple) sets To header' );
+
+# To allows multiple recipients as HashRef
+$rv = $Stuffer->to([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ]);
+stuff_ok( $Stuffer );
+stuff_ok( $rv    );
+is( $Stuffer->as_string, $rv->as_string, '->To (multiple) returns the same object' );
+is( $Stuffer->email->header('To'), 'bob@ali.as, another@ali.as, adam@ali.as', '->To (multiple) sets To header' );
 
 # Cc allows multiple recipients
 $rv = $Stuffer->cc('adam@ali.as', 'another@ali.as', 'bob@ali.as');
