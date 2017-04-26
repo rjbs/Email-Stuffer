@@ -342,6 +342,14 @@ L<Email::MIME> for the actual headers to use.
 
 If C<$body> is undefined, this method will do nothing.
 
+Prior to Email::Stuffer version 0.015 text body was marked as flowed,
+which broke all pre-formated body text.  Empty space at the beggining
+of the line was dropped and every new line character could be changed
+to one space (and vice versa).  Version 0.015 (and later) does not set
+flowed format automatically anymore and so text body is really plain
+text.  If you want to use old behavior of "advanced" flowed formatting,
+set flowed format manually by: C<text_body($body, format => 'flowed')>.
+
 =cut
 
 sub text_body {
@@ -352,7 +360,6 @@ sub text_body {
 		content_type => 'text/plain',
 		charset      => 'utf-8',
 		encoding     => 'quoted-printable',
-		format       => 'flowed',
 		# Params overwrite them
 		@_,
 		);
