@@ -268,7 +268,7 @@ sub header {
 	return $self;
 }
 
-=method to $address
+=method to @addresses
 
 Sets the To: header in the email
 
@@ -294,7 +294,7 @@ sub from {
 	return $self;
 }
 
-=method cc $address
+=method cc @addresses
 
 Sets the Cc: header in the email
 
@@ -306,7 +306,7 @@ sub cc {
 	return $self;
 }
 
-=method bcc $address
+=method bcc @addresses
 
 Sets the Bcc: header in the email
 
