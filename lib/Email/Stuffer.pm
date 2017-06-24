@@ -197,28 +197,29 @@ my %IS_INIT_ARG = map {; $_ => 1 } qw(
 );
 
 sub new {
-	Carp::croak("new method called on Email::Stuffer instance") if ref $_[0];
+    Carp::croak("new method called on Email::Stuffer instance") if ref $_[0];
 
-	my ($class, $arg) = @_;
+    my ( $class, $arg ) = @_;
 
-	my $self = bless {
-		parts      => [],
-		email      => Email::MIME->create(
-			header => [],
-			parts  => [],
-    ),
-  }, $class;
+    my $self = bless {
+        text_parts   => [],
+        attach_parts => [],
+        email        => Email::MIME->create(
+            header => [],
+            parts  => [],
+        ),
+    }, $class;
 
-  my @init_args = keys %{ $arg || {} };
-  if (my @bogus = grep {; ! $IS_INIT_ARG{$_} } @init_args) {
-    Carp::croak("illegal arguments to Email::Stuffer->new: @bogus");
-  }
+    my @init_args = keys %{ $arg || {} };
+    if ( my @bogus = grep { ; !$IS_INIT_ARG{$_} } @init_args ) {
+        Carp::croak("illegal arguments to Email::Stuffer->new: @bogus");
+    }
 
-	for my $init_arg (@init_args) {
-    $self->$init_arg($arg->{$init_arg});
-	}
+    for my $init_arg (@init_args) {
+        $self->$init_arg( $arg->{$init_arg} );
+    }
 
-	$self;
+    $self;
 }
 
 sub _self {
@@ -241,14 +242,25 @@ sub headers {
 	shift()->{email}->header_names; ## This is now header_names, headers is depreciated
 }
 
-=method parts
+=method text_parts
 
-Returns, as a list, the L<Email::MIME> parts for the Email
+Returns, as a list, the L<Email::MIME> parts for the Email to text.
 
 =cut
 
-sub parts {
-	grep { defined $_ } @{shift()->{parts}};
+sub text_parts {
+	grep { defined $_ } @{shift()->{text_parts}};
+}
+
+=method attach_parts
+
+Returns, as a list, the L<Email::MIME> parts for the Email relating to
+attachments.
+
+=cut
+
+sub attach_parts {
+	grep { defined $_ } @{shift()->{attach_parts}};
 }
 
 #####################################################################
@@ -365,7 +377,7 @@ sub text_body {
 		);
 
 	# Create the part in the text slot
-	$self->{parts}->[0] = Email::MIME->create(
+	$self->{text_parts}->[0] = Email::MIME->create(
 		attributes => \%attr,
 		body_str   => $body,
 		);
@@ -396,7 +408,7 @@ sub html_body {
 		);
 
 	# Create the part in the HTML slot
-	$self->{parts}->[1] = Email::MIME->create(
+	$self->{text_parts}->[1] = Email::MIME->create(
 		attributes => \%attr,
 		body_str   => $body,
 		);
@@ -467,12 +479,8 @@ sub attach {
 
 	### MORE?
 
-	# Determine the slot to put it at
-	my $slot = scalar @{$self->{parts}};
-	$slot = 3 if $slot < 3;
-
 	# Create the part in the attachment slot
-	$self->{parts}->[$slot] = Email::MIME->create(
+	push @{$self->{attach_parts}}, Email::MIME->create(
 		attributes => \%attr,
 		body       => $body,
 		);
@@ -584,32 +592,36 @@ Creates and returns the full L<Email::MIME> object for the email.
 =cut
 
 sub email {
-	my $self  = shift;
-	my @parts = $self->parts;
+    my $self       = shift;
+    my @text_parts = $self->text_parts;
+    my @parts      = $self->attach_parts;
 
-  ### Lyle Hopkins, code added to Fix single part, and multipart/alternative
-  ### problems
-  if (scalar(@{ $self->{parts} }) >= 3) {
-    ## multipart/mixed
-    $self->{email}->parts_set(\@parts);
-  } elsif (scalar(@{ $self->{parts} })) {
-    ## Check we actually have any parts
-    if ( _INSTANCE($parts[0], 'Email::MIME')
-      && _INSTANCE($parts[1], 'Email::MIME')
-    ) {
-      ## multipart/alternate
-      $self->{email}->header_set('Content-Type' => 'multipart/alternative');
-      $self->{email}->parts_set(\@parts);
-    } elsif (_INSTANCE($parts[0], 'Email::MIME')) {
-      ## As @parts is $self->parts without the blanks, we only need check
-      ## $parts[0]
-      ## single part text/plain
-      _transfer_headers($self->{email}, $parts[0]);
-      $self->{email} = $parts[0];
+    if ( scalar(@text_parts) > 1 ) {
+        my $text_mime =
+          Email::MIME->create(
+            header => [ 'Content-Type' => 'multipart/alternative' ] );
+        $text_mime->parts_set( \@text_parts );
+        unshift @parts, $text_mime;
     }
-  }
+    elsif ( scalar(@text_parts) == 1 ) {
+        ## As @text_parts is $self->text_parts without the blanks, we only need check
+        ## $parts[0]
+        ## single part text/plain OR text/html
+        unshift @parts, $text_parts[0];
+    }
 
-  $self->{email};
+    if ( scalar(@parts) > 1 ) {
+        ## More than one part, so use multipart/mixed
+        $self->{email}->header_set( 'Content-Type' => 'multipart/mixed' );
+        $self->{email}->parts_set( \@parts );
+    }
+    else {
+        # Just one part: text, html or attachment
+        _transfer_headers( $self->{email}, $parts[0] );
+        $self->{email} = $parts[0];
+    }
+
+    return $self->{email};
 }
 
 # Support coercion to an Email::MIME
