@@ -277,6 +277,7 @@ Sets the To: header in the email
 sub to {
 	my $self = shift()->_self;
 	Carp::croak("to is a required field") unless defined $_[0];
+	Carp::croak("to field must not be a reference") if ref $_[0];
 	$self->{email}->header_str_set(To => join(q{, }, @_));
 	return $self;
 }
@@ -302,6 +303,7 @@ Sets the Cc: header in the email
 
 sub cc {
 	my $self = shift()->_self;
+	Carp::croak("cc field must not be a reference") if ref $_[0];
 	$self->{email}->header_str_set(Cc => join(q{, }, @_));
 	return $self;
 }
@@ -314,6 +316,7 @@ Sets the Bcc: header in the email
 
 sub bcc {
 	my $self = shift()->_self;
+	Carp::croak("bcc field must not be a reference") if ref $_[0];
 	$self->{email}->header_str_set(Bcc => join(q{, }, @_));
 	return $self;
 }
