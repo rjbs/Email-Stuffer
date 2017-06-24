@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 62;
+use Test::More tests => 66;
 use Test::Fatal;
 use Email::Stuffer;
 
@@ -126,5 +126,18 @@ $error = exception { Email::Stuffer::_slurp( 'no such file' ) };
 like $error,
     qr/\Aerror opening no such file: \Q$enoent/,
     '_slurp croaks when passed a bad filename';
+
+# Set a To, From, Cc and BCc name and check if ascii
+$rv = $Stuffer->to('adam@äli.as');
+is( $Stuffer->email->header('To'),   'adam@xn--li-dda5w.as', '->To sets To header'     );
+
+$rv->from('adam@äli.as');
+is( $Stuffer->email->header('From'), 'adam@xn--li-dda5w.as', '->From sets From header' );
+
+$rv->cc  ('adam@äli.as');
+is( $Stuffer->email->header('Cc'),   'adam@xn--li-dda5w.as', '->Cc sets From header'   );
+
+$rv->bcc ('adam@äli.as');
+is( $Stuffer->email->header('BCc'),  'adam@xn--li-dda5w.as', '->BCc sets From header'  );
 
 1;
