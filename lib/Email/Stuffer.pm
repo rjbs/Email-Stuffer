@@ -3,6 +3,8 @@ use warnings;
 package Email::Stuffer;
 # ABSTRACT: A more casual approach to creating and sending Email:: emails
 
+use Scalar::Util qw(blessed);
+
 =head1 SYNOPSIS
 
   # Prepare the message
@@ -274,9 +276,24 @@ Sets the To: header in the email
 
 =cut
 
+sub _assert_addr_list_ok {
+  my ($self, $header, $allow_empty, $list) = @_;
+
+  Carp::croak("$header is a required field")
+    unless $allow_empty or @$list;
+
+  for (@$list) {
+    Carp::croak("list of $header headers contains undefined values")
+      unless defined;
+
+    Carp::croak("list of $header headers contains unblessed references")
+      if ref && ! blessed $_;
+  }
+}
+
 sub to {
 	my $self = shift()->_self;
-	Carp::croak("to is a required field") unless defined $_[0];
+	$self->_assert_addr_list_ok(to => 0 => \@_);
 	$self->{email}->header_str_set(To => join(q{, }, @_));
 	return $self;
 }
@@ -289,7 +306,7 @@ Sets the From: header in the email
 
 sub from {
 	my $self = shift()->_self;
-	Carp::croak("from is a required field") unless defined $_[0];
+	$self->_assert_addr_list_ok(from => 0 => \@_);
 	$self->{email}->header_str_set(From => shift);
 	return $self;
 }
@@ -302,6 +319,7 @@ Sets the Cc: header in the email
 
 sub cc {
 	my $self = shift()->_self;
+	$self->_assert_addr_list_ok(cc => 1 => \@_);
 	$self->{email}->header_str_set(Cc => join(q{, }, @_));
 	return $self;
 }
@@ -314,6 +332,7 @@ Sets the Bcc: header in the email
 
 sub bcc {
 	my $self = shift()->_self;
+	$self->_assert_addr_list_ok(bcc => 1 => \@_);
 	$self->{email}->header_str_set(Bcc => join(q{, }, @_));
 	return $self;
 }
