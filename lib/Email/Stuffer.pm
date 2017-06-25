@@ -307,6 +307,7 @@ Sets the From: header in the email
 sub from {
 	my $self = shift()->_self;
 	$self->_assert_addr_list_ok(from => 0 => \@_);
+	Carp::croak("only one address is allowed in the from header") if @_ > 1;
 	$self->{email}->header_str_set(From => shift);
 	return $self;
 }
