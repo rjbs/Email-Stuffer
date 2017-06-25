@@ -385,8 +385,9 @@ sub subject {
 =method text_body $body [, $header => $value, ... ]
 
 Sets the text body of the email. Unless specified, all the appropriate
-headers are set for you. You may override any as needed. See
-L<Email::MIME> for the actual headers to use.
+headers are set for you. You may override any as needed. See the
+C<attributes> parameter to L<Email::MIME/create> for the headers you
+can set.
 
 If C<$body> is undefined, this method will do nothing.
 
@@ -424,8 +425,9 @@ sub text_body {
 =method html_body $body [, $header => $value, ... ]
 
 Set the HTML body of the email. Unless specified, all the appropriate
-headers are set for you. You may override any as needed. See
-L<Email::MIME> for the actual headers to use.
+headers are set for you. You may override any as needed. See the
+C<attributes> parameter to L<Email::MIME/create> for the headers you
+can set.
 
 If C<$body> is undefined, this method will do nothing.
 
@@ -457,7 +459,9 @@ sub html_body {
 Adds an attachment to the email. The first argument is the file contents
 followed by (as for text_body and html_body) the list of headers to use.
 Email::Stuffer should TRY to guess the headers right, but you may wish
-to provide them anyway to be sure. Encoding is Base64 by default.
+to provide them anyway to be sure. Encoding is Base64 by default. See
+the C<attributes> parameter to L<Email::MIME/create> for the headers you
+can set.
 
 =cut
 
@@ -532,7 +536,8 @@ sub attach {
 
 Attachs a file that already exists on the filesystem to the email.
 C<attach_file> will auto-detect the MIME type, and use the file's
-current name when attaching.
+current name when attaching. See the C<attributes> parameter to
+L<Email::MIME/create> for the headers you can set.
 
 =cut
 
