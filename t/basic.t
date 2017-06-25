@@ -53,10 +53,14 @@ stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->To (multiple) returns the same object' );
 is( $Stuffer->email->header('To'), 'adam@ali.as, another@ali.as, bob@ali.as', '->To (multiple) sets To header' );
 
-my $error = exception { $Stuffer->to([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ]) };
-like $error,
-    qr/list of to headers contains unblessed ref/,
-    'to croaks when passed a reference';
+my $error = exception {
+  $Stuffer->to([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ])
+};
+like(
+  $error,
+  qr/list of to headers contains unblessed ref/,
+  'to croaks when passed a reference',
+);
 
 # Cc allows multiple recipients
 $rv = $Stuffer->cc('adam@ali.as', 'another@ali.as', 'bob@ali.as');
@@ -65,10 +69,14 @@ stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->Cc (multiple) returns the same object' );
 is( $Stuffer->email->header('Cc'), 'adam@ali.as, another@ali.as, bob@ali.as', '->Cc (multiple) sets To header' );
 
-$error = exception { $Stuffer->cc([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ]) };
-like $error,
-    qr/list of cc headers contains unblessed ref/,
-    'cc croaks when passed a reference';
+$error = exception {
+  $Stuffer->cc([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ])
+};
+like(
+  $error,
+  qr/list of cc headers contains unblessed ref/,
+  'cc croaks when passed a reference',
+);
 
 # Bcc allows multiple recipients
 $rv = $Stuffer->bcc('adam@ali.as', 'another@ali.as', 'bob@ali.as');
@@ -77,10 +85,14 @@ stuff_ok( $rv    );
 is( $Stuffer->as_string, $rv->as_string, '->Bcc (multiple) returns the same object' );
 is( $Stuffer->email->header('Bcc'), 'adam@ali.as, another@ali.as, bob@ali.as', '->Bcc (multiple) sets To header' );
 
-$error = exception { $Stuffer->bcc([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ]) };
-like $error,
-    qr/list of bcc headers contains unblessed ref/,
-    'bcc croaks when passed a reference';
+$error = exception {
+  $Stuffer->bcc([ 'bob@ali.as', 'another@ali.as','adam@ali.as' ])
+};
+like(
+  $error,
+  qr/list of bcc headers contains unblessed ref/,
+  'bcc croaks when passed a reference',
+);
 
 # More complex one
 use Email::Sender::Transport::Test 0.120000 (); # ->delivery_count, etc.
