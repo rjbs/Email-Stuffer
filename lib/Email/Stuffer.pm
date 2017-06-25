@@ -168,7 +168,7 @@ use strict;
 use Carp                   qw(croak);
 use File::Basename         ();
 use Params::Util 1.05      qw(_INSTANCE _INSTANCEDOES);
-use Email::MIME 1.920      ();
+use Email::MIME 1.943      ();
 use Email::MIME::Creator   ();
 use Email::Sender::Simple  ();
 use Module::Runtime        qw(require_module);
@@ -308,7 +308,7 @@ sub _assert_addr_list_ok {
 sub to {
   my $self = shift()->_self;
   $self->_assert_addr_list_ok(to => 0 => \@_);
-  $self->{email}->header_str_set(To => join(q{, }, @_));
+  $self->{email}->header_str_set(To => (@_ > 1 ? \@_ : @_));
   return $self;
 }
 
@@ -349,7 +349,7 @@ Sets the Cc: header in the email
 sub cc {
   my $self = shift()->_self;
   $self->_assert_addr_list_ok(cc => 1 => \@_);
-  $self->{email}->header_str_set(Cc => join(q{, }, @_));
+  $self->{email}->header_str_set(Cc => (@_ > 1 ? \@_ : @_));
   return $self;
 }
 
@@ -362,7 +362,7 @@ Sets the Bcc: header in the email
 sub bcc {
   my $self = shift()->_self;
   $self->_assert_addr_list_ok(bcc => 1 => \@_);
-  $self->{email}->header_str_set(Bcc => join(q{, }, @_));
+  $self->{email}->header_str_set(Bcc => (@_ > 1 ? \@_ : @_));
   return $self;
 }
 
