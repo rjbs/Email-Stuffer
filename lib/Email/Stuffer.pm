@@ -187,15 +187,24 @@ You can pass a hashref of properties to set, including:
 * from
 * cc
 * bcc
+* reply_to
 * subject
 * text_body
 * html_body
 * transport
 
+The to, cc, bcc, and reply_to headers properties may be provided as array
+references.  The array's contents will be used as the list of arguments to the
+setter.
+
 =cut
 
 my %IS_INIT_ARG = map {; $_ => 1 } qw(
   to from cc bcc reply_to subject text_body html_body transport
+);
+
+my %IS_ARRAY_ARG = map {; $_ => 1 } qw(
+  to cc bcc reply_to
 );
 
 sub new {
@@ -217,7 +226,12 @@ sub new {
   }
 
   for my $init_arg (@init_args) {
-    $self->$init_arg($arg->{$init_arg});
+    my @args = $arg->{$init_arg};
+    if ($IS_ARRAY_ARG{$init_arg} && ref $args[0] && ref $args[0] eq 'ARRAY') {
+      @args = @{ $args[0] };
+    }
+
+    $self->$init_arg(@args);
   }
 
   $self;
