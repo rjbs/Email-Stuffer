@@ -11,16 +11,16 @@ my $TEST_GIF = catfile( 't', 'data', 'paypal.gif' );
 ok( -f $TEST_GIF, "Found test image: $TEST_GIF" );
 
 sub string_ok {
-	my $string = shift;
-	$string = !! (defined $string and ! ref $string and $string ne '');
-	ok( $string, $_[0] || 'Got a normal string' );
+  my $string = shift;
+  $string = !! (defined $string and ! ref $string and $string ne '');
+  ok( $string, $_[0] || 'Got a normal string' );
 }
 
 sub stuff_ok {
-	my $stuff = shift;
-	isa_ok( $stuff,        'Email::Stuffer' );
-	isa_ok( $stuff->email, 'Email::MIME' );
-	string_ok( $stuff->as_string, 'Got a non-null string for Email::Stuffer->as_string' );
+  my $stuff = shift;
+  isa_ok( $stuff,        'Email::Stuffer' );
+  isa_ok( $stuff->email, 'Email::MIME' );
+  string_ok( $stuff->as_string, 'Got a non-null string for Email::Stuffer->as_string' );
 }
 
 #####################################################################

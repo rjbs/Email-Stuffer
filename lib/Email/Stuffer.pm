@@ -199,15 +199,15 @@ my %IS_INIT_ARG = map {; $_ => 1 } qw(
 );
 
 sub new {
-	Carp::croak("new method called on Email::Stuffer instance") if ref $_[0];
+  Carp::croak("new method called on Email::Stuffer instance") if ref $_[0];
 
-	my ($class, $arg) = @_;
+  my ($class, $arg) = @_;
 
-	my $self = bless {
-		parts      => [],
-		email      => Email::MIME->create(
-			header => [],
-			parts  => [],
+  my $self = bless {
+    parts      => [],
+    email      => Email::MIME->create(
+      header => [],
+      parts  => [],
     ),
   }, $class;
 
@@ -216,16 +216,16 @@ sub new {
     Carp::croak("illegal arguments to Email::Stuffer->new: @bogus");
   }
 
-	for my $init_arg (@init_args) {
+  for my $init_arg (@init_args) {
     $self->$init_arg($arg->{$init_arg});
-	}
+  }
 
-	$self;
+  $self;
 }
 
 sub _self {
-	my $either = shift;
-	ref($either) ? $either : $either->new;
+  my $either = shift;
+  ref($either) ? $either : $either->new;
 }
 
 =method header_names
@@ -236,11 +236,11 @@ For backwards compatibility, this method can also be called as B[headers].
 =cut
 
 sub header_names {
-	shift()->{email}->header_names;
+  shift()->{email}->header_names;
 }
 
 sub headers {
-	shift()->{email}->header_names; ## This is now header_names, headers is depreciated
+  shift()->{email}->header_names; ## This is now header_names, headers is depreciated
 }
 
 =method parts
@@ -250,7 +250,7 @@ Returns, as a list, the L<Email::MIME> parts for the Email
 =cut
 
 sub parts {
-	grep { defined $_ } @{shift()->{parts}};
+  grep { defined $_ } @{shift()->{parts}};
 }
 
 #####################################################################
@@ -264,10 +264,10 @@ will overwrite previous calls $value.
 =cut
 
 sub header {
-	my $self = shift()->_self;
-	return unless @_;
-	$self->{email}->header_str_set(ucfirst shift, shift);
-	return $self;
+  my $self = shift()->_self;
+  return unless @_;
+  $self->{email}->header_str_set(ucfirst shift, shift);
+  return $self;
 }
 
 =method to @addresses
@@ -292,10 +292,10 @@ sub _assert_addr_list_ok {
 }
 
 sub to {
-	my $self = shift()->_self;
-	$self->_assert_addr_list_ok(to => 0 => \@_);
-	$self->{email}->header_str_set(To => join(q{, }, @_));
-	return $self;
+  my $self = shift()->_self;
+  $self->_assert_addr_list_ok(to => 0 => \@_);
+  $self->{email}->header_str_set(To => join(q{, }, @_));
+  return $self;
 }
 
 =method from $address
@@ -305,11 +305,11 @@ Sets the From: header in the email
 =cut
 
 sub from {
-	my $self = shift()->_self;
-	$self->_assert_addr_list_ok(from => 0 => \@_);
-	Carp::croak("only one address is allowed in the from header") if @_ > 1;
-	$self->{email}->header_str_set(From => shift);
-	return $self;
+  my $self = shift()->_self;
+  $self->_assert_addr_list_ok(from => 0 => \@_);
+  Carp::croak("only one address is allowed in the from header") if @_ > 1;
+  $self->{email}->header_str_set(From => shift);
+  return $self;
 }
 
 =method cc @addresses
@@ -319,10 +319,10 @@ Sets the Cc: header in the email
 =cut
 
 sub cc {
-	my $self = shift()->_self;
-	$self->_assert_addr_list_ok(cc => 1 => \@_);
-	$self->{email}->header_str_set(Cc => join(q{, }, @_));
-	return $self;
+  my $self = shift()->_self;
+  $self->_assert_addr_list_ok(cc => 1 => \@_);
+  $self->{email}->header_str_set(Cc => join(q{, }, @_));
+  return $self;
 }
 
 =method bcc @addresses
@@ -332,10 +332,10 @@ Sets the Bcc: header in the email
 =cut
 
 sub bcc {
-	my $self = shift()->_self;
-	$self->_assert_addr_list_ok(bcc => 1 => \@_);
-	$self->{email}->header_str_set(Bcc => join(q{, }, @_));
-	return $self;
+  my $self = shift()->_self;
+  $self->_assert_addr_list_ok(bcc => 1 => \@_);
+  $self->{email}->header_str_set(Bcc => join(q{, }, @_));
+  return $self;
 }
 
 =method subject $text
@@ -345,10 +345,10 @@ Sets the Subject: header in the email
 =cut
 
 sub subject {
-	my $self = shift()->_self;
-	Carp::croak("subject is a required field") unless defined $_[0];
-	$self->{email}->header_str_set(Subject => shift);
-	return $self;
+  my $self = shift()->_self;
+  Carp::croak("subject is a required field") unless defined $_[0];
+  $self->{email}->header_str_set(Subject => shift);
+  return $self;
 }
 
 #####################################################################
@@ -373,24 +373,24 @@ set flowed format manually by: C<text_body($body, format => 'flowed')>.
 =cut
 
 sub text_body {
-	my $self = shift()->_self;
-	my $body = defined $_[0] ? shift : return $self;
-	my %attr = (
-		# Defaults
-		content_type => 'text/plain',
-		charset      => 'utf-8',
-		encoding     => 'quoted-printable',
-		# Params overwrite them
-		@_,
-		);
+  my $self = shift()->_self;
+  my $body = defined $_[0] ? shift : return $self;
+  my %attr = (
+    # Defaults
+    content_type => 'text/plain',
+    charset      => 'utf-8',
+    encoding     => 'quoted-printable',
+    # Params overwrite them
+    @_,
+    );
 
-	# Create the part in the text slot
-	$self->{parts}->[0] = Email::MIME->create(
-		attributes => \%attr,
-		body_str   => $body,
-		);
+  # Create the part in the text slot
+  $self->{parts}->[0] = Email::MIME->create(
+    attributes => \%attr,
+    body_str   => $body,
+    );
 
-	$self;
+  $self;
 }
 
 =method html_body $body [, $header => $value, ... ]
@@ -404,24 +404,24 @@ If C<$body> is undefined, this method will do nothing.
 =cut
 
 sub html_body {
-	my $self = shift()->_self;
-	my $body = defined $_[0] ? shift : return $self;
-	my %attr = (
-		# Defaults
-		content_type => 'text/html',
-		charset      => 'utf-8',
-		encoding     => 'quoted-printable',
-		# Params overwrite them
-		@_,
-		);
+  my $self = shift()->_self;
+  my $body = defined $_[0] ? shift : return $self;
+  my %attr = (
+    # Defaults
+    content_type => 'text/html',
+    charset      => 'utf-8',
+    encoding     => 'quoted-printable',
+    # Params overwrite them
+    @_,
+    );
 
-	# Create the part in the HTML slot
-	$self->{parts}->[1] = Email::MIME->create(
-		attributes => \%attr,
-		body_str   => $body,
-		);
+  # Create the part in the HTML slot
+  $self->{parts}->[1] = Email::MIME->create(
+    attributes => \%attr,
+    body_str   => $body,
+    );
 
-	$self;
+  $self;
 }
 
 =method attach $contents [, $header => $value, ... ]
@@ -434,70 +434,70 @@ to provide them anyway to be sure. Encoding is Base64 by default.
 =cut
 
 sub _detect_content_type {
-	my ($filename, $body) = @_;
+  my ($filename, $body) = @_;
 
-	if (defined($filename)) {
-		if ($filename =~ /\.([a-zA-Z]{3,4})\z/) {
-			my $content_type = {
-				'gif'  => 'image/gif',
-				'png'  => 'image/png',
-				'jpg'  => 'image/jpeg',
-				'jpeg' => 'image/jpeg',
-				'txt'  => 'text/plain',
-				'htm'  => 'text/html',
-				'html' => 'text/html',
-				'css'  => 'text/css',
-				'csv'  => 'text/csv',
-				'pdf'  => 'application/pdf',
-				'wav'  => 'audio/wav',
-			}->{lc($1)};
-			return $content_type if defined $content_type;
-		}
-	}
-	if ($body =~ /
-		\A(?:
-		    (GIF8)          # gif
-		  | (\xff\xd8)      # jpeg
-		  | (\x89PNG)       # png
-		  | (%PDF-)         # pdf
-		)
-	/x) {
-		return 'image/gif'  if $1;
-		return 'image/jpeg' if $2;
-		return 'image/png'  if $3;
-		return 'application/pdf' if $4;
-	}
-	return 'application/octet-stream';
+  if (defined($filename)) {
+    if ($filename =~ /\.([a-zA-Z]{3,4})\z/) {
+      my $content_type = {
+        'gif'  => 'image/gif',
+        'png'  => 'image/png',
+        'jpg'  => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'txt'  => 'text/plain',
+        'htm'  => 'text/html',
+        'html' => 'text/html',
+        'css'  => 'text/css',
+        'csv'  => 'text/csv',
+        'pdf'  => 'application/pdf',
+        'wav'  => 'audio/wav',
+      }->{lc($1)};
+      return $content_type if defined $content_type;
+    }
+  }
+  if ($body =~ /
+    \A(?:
+        (GIF8)          # gif
+      | (\xff\xd8)      # jpeg
+      | (\x89PNG)       # png
+      | (%PDF-)         # pdf
+    )
+  /x) {
+    return 'image/gif'  if $1;
+    return 'image/jpeg' if $2;
+    return 'image/png'  if $3;
+    return 'application/pdf' if $4;
+  }
+  return 'application/octet-stream';
 }
 
 sub attach {
-	my $self = shift()->_self;
-	my $body = defined $_[0] ? shift : return undef;
-	my %attr = (
-		# Cheap defaults
-		encoding => 'base64',
-		# Params overwrite them
-		@_,
-		);
+  my $self = shift()->_self;
+  my $body = defined $_[0] ? shift : return undef;
+  my %attr = (
+    # Cheap defaults
+    encoding => 'base64',
+    # Params overwrite them
+    @_,
+    );
 
-	# The more expensive defaults if needed
-	unless ( $attr{content_type} ) {
-		$attr{content_type} = _detect_content_type($attr{filename}, $body);
-	}
+  # The more expensive defaults if needed
+  unless ( $attr{content_type} ) {
+    $attr{content_type} = _detect_content_type($attr{filename}, $body);
+  }
 
-	### MORE?
+  ### MORE?
 
-	# Determine the slot to put it at
-	my $slot = scalar @{$self->{parts}};
-	$slot = 3 if $slot < 3;
+  # Determine the slot to put it at
+  my $slot = scalar @{$self->{parts}};
+  $slot = 3 if $slot < 3;
 
-	# Create the part in the attachment slot
-	$self->{parts}->[$slot] = Email::MIME->create(
-		attributes => \%attr,
-		body       => $body,
-		);
+  # Create the part in the attachment slot
+  $self->{parts}->[$slot] = Email::MIME->create(
+    attributes => \%attr,
+    body       => $body,
+    );
 
-	$self;
+  $self;
 }
 
 =method attach_file $file [, $header => $value, ... ]
@@ -509,47 +509,47 @@ current name when attaching.
 =cut
 
 sub attach_file {
-	my $self = shift;
-	my $body_arg = shift;
-	my $name = undef;
-	my $body = undef;
+  my $self = shift;
+  my $body_arg = shift;
+  my $name = undef;
+  my $body = undef;
 
-	# Support IO::All::File arguments
-	if ( Params::Util::_INSTANCE($body_arg, 'IO::All::File') ) {
-		$body_arg->binmode;
-		$name = $body_arg->name;
-		$body = $body_arg->all;
+  # Support IO::All::File arguments
+  if ( Params::Util::_INSTANCE($body_arg, 'IO::All::File') ) {
+    $body_arg->binmode;
+    $name = $body_arg->name;
+    $body = $body_arg->all;
 
-	# Support file names
-	} elsif ( defined $body_arg and Params::Util::_STRING($body_arg) ) {
-		croak "No such file '$body_arg'" unless -f $body_arg;
-		$name = $body_arg;
-		$body = _slurp( $body_arg );
+  # Support file names
+  } elsif ( defined $body_arg and Params::Util::_STRING($body_arg) ) {
+    croak "No such file '$body_arg'" unless -f $body_arg;
+    $name = $body_arg;
+    $body = _slurp( $body_arg );
 
-	# That's it
-	} else {
-		my $type = ref($body_arg) || "<$body_arg>";
-		croak "Expected a file name or an IO::All::File derivative, got $type";
-	}
+  # That's it
+  } else {
+    my $type = ref($body_arg) || "<$body_arg>";
+    croak "Expected a file name or an IO::All::File derivative, got $type";
+  }
 
-	# Clean the file name
-	$name = File::Basename::basename($name);
+  # Clean the file name
+  $name = File::Basename::basename($name);
 
-	croak("basename somehow returned undef") unless defined $name;
+  croak("basename somehow returned undef") unless defined $name;
 
-	# Now attach as normal
-	$self->attach( $body, name => $name, filename => $name, @_ );
+  # Now attach as normal
+  $self->attach( $body, name => $name, filename => $name, @_ );
 }
 
 # Provide a simple _slurp implementation
 sub _slurp {
-	my $file = shift;
-	local $/ = undef;
+  my $file = shift;
+  local $/ = undef;
 
-	open my $slurp, '<:raw', $file or croak("error opening $file: $!");
-	my $source = <$slurp>;
-	close( $slurp ) or croak "error after slurping $file: $!";
-	\$source;
+  open my $slurp, '<:raw', $file or croak("error opening $file: $!");
+  my $source = <$slurp>;
+  close( $slurp ) or croak "error after slurping $file: $!";
+  \$source;
 }
 
 =method transport
@@ -574,24 +574,24 @@ an L<Email::Sender::Transport> object) and it will be used as is.
 =cut
 
 sub transport {
-	my $self = shift;
+  my $self = shift;
 
-	if ( @_ ) {
-		# Change the transport
-		if ( _INSTANCEDOES($_[0], 'Email::Sender::Transport') ) {
-			$self->{transport} = shift;
-		} else {
-		  my ($moniker, @arg) = @_;
-		  my $class = $moniker =~ s/\A=//
-		            ? $moniker
-		            : "Email::Sender::Transport::$moniker";
-		  require_module($class);
-			my $transport = $class->new(@arg);
-			$self->{transport} = $transport;
-		}
-	}
+  if ( @_ ) {
+    # Change the transport
+    if ( _INSTANCEDOES($_[0], 'Email::Sender::Transport') ) {
+      $self->{transport} = shift;
+    } else {
+      my ($moniker, @arg) = @_;
+      my $class = $moniker =~ s/\A=//
+                ? $moniker
+                : "Email::Sender::Transport::$moniker";
+      require_module($class);
+      my $transport = $class->new(@arg);
+      $self->{transport} = $transport;
+    }
+  }
 
-	$self;
+  $self;
 }
 
 #####################################################################
@@ -604,8 +604,8 @@ Creates and returns the full L<Email::MIME> object for the email.
 =cut
 
 sub email {
-	my $self  = shift;
-	my @parts = $self->parts;
+  my $self  = shift;
+  my @parts = $self->parts;
 
   ### Lyle Hopkins, code added to Fix single part, and multipart/alternative
   ### problems
@@ -665,7 +665,7 @@ scenes) Email::MIME-E<gt>as_string.
 =cut
 
 sub as_string {
-	shift()->email->as_string;
+  shift()->email->as_string;
 }
 
 =method send
@@ -677,15 +677,15 @@ On failure, returns false.
 =cut
 
 sub send {
-	my $self = shift;
-	my $arg  = shift;
-	my $email = $self->email or return undef;
+  my $self = shift;
+  my $arg  = shift;
+  my $email = $self->email or return undef;
 
-	my $transport = $self->{transport};
+  my $transport = $self->{transport};
 
-	Email::Sender::Simple->try_to_send(
-	  $email,
-	  {
+  Email::Sender::Simple->try_to_send(
+    $email,
+    {
       ($transport ? (transport => $transport) : ()),
       $arg ? %$arg : (),
     },
@@ -701,15 +701,15 @@ On failure, throws an exception.
 =cut
 
 sub send_or_die {
-	my $self = shift;
-	my $arg  = shift;
-	my $email = $self->email or return undef;
+  my $self = shift;
+  my $arg  = shift;
+  my $email = $self->email or return undef;
 
-	my $transport = $self->{transport};
+  my $transport = $self->{transport};
 
-	Email::Sender::Simple->send(
-	  $email,
-	  {
+  Email::Sender::Simple->send(
+    $email,
+    {
       ($transport ? (transport => $transport) : ()),
       $arg ? %$arg : (),
     },
