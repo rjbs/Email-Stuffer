@@ -189,6 +189,7 @@ You can pass a hashref of properties to set, including:
 * bcc
 * reply_to
 * subject
+* header (use a hashref for this in new)
 * text_body
 * html_body
 * transport
@@ -200,7 +201,7 @@ setter.
 =cut
 
 my %IS_INIT_ARG = map {; $_ => 1 } qw(
-  to from cc bcc reply_to subject text_body html_body transport
+  to from cc bcc reply_to subject header text_body html_body transport
 );
 
 my %IS_ARRAY_ARG = map {; $_ => 1 } qw(
@@ -270,17 +271,20 @@ sub parts {
 #####################################################################
 # Header Methods
 
-=method header $header => $value
+=method header $header => $value OR header { $header1 => $value1, ... }
 
-Sets a named header in the email. Multiple calls with the same $header
-will overwrite previous calls $value.
+Sets one or more named headers in the email.  Multiple calls with the same
+$header name will overwrite previous calls $value.
 
 =cut
 
 sub header {
   my $self = shift()->_self;
   return unless @_;
-  $self->{email}->header_str_set(ucfirst shift, shift);
+  my $hdrs = ref $_[0] eq 'HASH' ? $_[0] : { @_ };
+  foreach my $name (keys %{$hdrs}) {
+    $self->{email}->header_str_set(ucfirst $name, $hdrs->{$name});
+  }
   return $self;
 }
 
