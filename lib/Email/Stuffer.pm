@@ -396,7 +396,7 @@ of the line was dropped and every new line character could be changed
 to one space (and vice versa).  Version 0.015 (and later) does not set
 flowed format automatically anymore and so text body is really plain
 text.  If you want to use old behavior of "advanced" flowed formatting,
-set flowed format manually by: C<text_body($body, format => 'flowed')>.
+set flowed format manually by: C<< text_body($body, format => 'flowed') >>.
 
 =cut
 
