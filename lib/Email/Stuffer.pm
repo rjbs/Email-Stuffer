@@ -596,8 +596,7 @@ you want to use to send the email, and any options that need to be
 used to instantiate the transport.  C<$moniker> is used as the transport
 name; if it starts with an equals sign (C<=>) then the text after the
 sign is used as the class.  Otherwise, the text is prepended by
-C<Email::Sender::Transport::>.  In neither case will a module be
-automatically loaded.
+C<Email::Sender::Transport::>.
 
 Alternatively, you can pass a complete transport object (which must be
 an L<Email::Sender::Transport> object) and it will be used as is.
