@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - "transport" can now be passed an arrayref in new
 
 0.016     2017-08-31 09:41:07-04:00 America/New_York
         - email address fields (to, cc, etc) now use the address list support

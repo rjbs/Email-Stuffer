@@ -205,6 +205,7 @@ my %IS_INIT_ARG = map {; $_ => 1 } qw(
 
 my %IS_ARRAY_ARG = map {; $_ => 1 } qw(
   to cc bcc reply_to
+  transport
 );
 
 sub new {
