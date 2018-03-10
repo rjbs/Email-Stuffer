@@ -8,6 +8,7 @@ Revision history for Perl extension Email::Stuffer
 
 0.015     2017-06-24 21:45:47-04:00 America/New_York (TRIAL RELEASE)
         - text parts are no longer format=flowed (Pali Rohár)
+        - reply_to method added to set Reply-To
 
 0.014     2016-04-30 19:28:26-04:00 America/New_York
         - you can now pass (some) properties of the email to the ->new
