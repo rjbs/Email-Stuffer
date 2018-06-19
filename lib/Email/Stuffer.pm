@@ -605,7 +605,7 @@ an L<Email::Sender::Transport> object) and it will be used as is.
 =cut
 
 sub transport {
-  my $self = shift;
+  my $self = shift()->_self;
 
   if ( @_ ) {
     # Change the transport
