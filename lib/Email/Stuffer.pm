@@ -294,6 +294,9 @@ Sets the To: header in the email
 sub _assert_addr_list_ok {
   my ($self, $header, $allow_empty, $list) = @_;
 
+  Carp::croak('missing required header')
+    unless $header;
+
   Carp::croak("$header is a required field")
     unless $allow_empty or @$list;
 
@@ -321,8 +324,8 @@ Sets the From: header in the email
 
 sub from {
   my $self = shift()->_self;
-  $self->_assert_addr_list_ok(from => 0 => \@_);
   Carp::croak("only one address is allowed in the from header") if @_ > 1;
+  $self->_assert_addr_list_ok(from => 0 => \@_);
   $self->{email}->header_str_set(From => shift);
   return $self;
 }
@@ -335,8 +338,8 @@ Sets the Reply-To: header in the email
 
 sub reply_to {
   my $self = shift()->_self;
-  $self->_assert_addr_list_ok('reply-to' => 0 => \@_);
   Carp::croak("only one address is allowed in the reply-to header") if @_ > 1;
+  $self->_assert_addr_list_ok('reply-to' => 0 => \@_);
   $self->{email}->header_str_set('Reply-To' => shift);
   return $self;
 }
