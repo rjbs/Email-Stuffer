@@ -531,7 +531,7 @@ sub attach {
   $self;
 }
 
-=method attach_file $file [, $attribuet => $value, ... ]
+=method attach_file $file [, $attribute => $value, ... ]
 
 Attachs a file that already exists on the filesystem to the email.
 C<attach_file> will attempt to auto-detect the MIME type, and use the
