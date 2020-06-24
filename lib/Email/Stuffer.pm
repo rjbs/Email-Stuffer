@@ -701,7 +701,15 @@ sub as_string {
 
 =method send
 
+  $stuffer->send;
+
+or
+
+  $stuffer->send({ to => [ $to_1, $to_2 ], from => $sender });
+
 Sends the email via L<Email::Sender::Simple>.
+L<Envelope information|Email::Sender::Manual::QuickStart/"envelope information">
+can be specified in a hash reference.
 
 On failure, returns false.
 
@@ -725,7 +733,15 @@ sub send {
 
 =method send_or_die
 
+  $stuffer->send_or_die;
+
+or
+
+  $stuffer->send_or_die({ to => [ $to_1, $to_2 ], from => $sender });
+
 Sends the email via L<Email::Sender::Simple>.
+L<Envelope information|Email::Sender::Manual::QuickStart/"envelope information">
+can be specified in a hash reference.
 
 On failure, throws an exception.
 
