@@ -1,6 +1,8 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+
+0.018     2020-07-03 17:14:36-04:00 America/New_York
         - document envelope argument to ->send (thanks, Dan Book)
         - fix a bug that prevented ->transport from being the first method
           called (thanks, Alastair Douglas)
