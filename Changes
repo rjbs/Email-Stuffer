@@ -1,6 +1,7 @@
 Revision history for Perl extension Email::Stuffer
 
 {{$NEXT}}
+        - document envelope argument to ->send (thanks, Dan Book)
 
 0.017     2018-03-10 18:01:43-05:00 America/New_York
         - "transport" can now be passed an arrayref in new
