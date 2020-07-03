@@ -115,12 +115,17 @@ my $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>')
                         ->send;
 ok( $rv2, 'Email sent ok' );
 is( $test->delivery_count, 1, 'Sent one email' );
-my $email = $test->shift_deliveries->{email}->as_string;
-like( $email, qr/Adam Kennedy/,  'Email contains from name' );
-like( $email, qr/phase-n/,       'Email contains to string' );
-like( $email, qr/Hello/,         'Email contains subject string' );
-like( $email, qr/I am an email/, 'Email contains text_body' );
-like( $email, qr/paypal/,        'Email contains file name' );
+my $email  = $test->shift_deliveries->{email};
+my $string = $email->as_string;
+like( $string, qr/Adam Kennedy/,  'Email contains from name' );
+like( $string, qr/phase-n/,       'Email contains to string' );
+like( $string, qr/Hello/,         'Email contains subject string' );
+like( $string, qr/I am an email/, 'Email contains text_body' );
+like( $string, qr/paypal/,        'Email contains file name' );
+
+my $mime = $email->object;
+like( ($mime->subparts)[0]->content_type, qr{^text/plain}, 'First part is text/plain');
+like( ($mime->subparts)[1]->content_type, qr{^image/gif}, 'Second part is image/gif');
 
 # attach_file content_type
 $rv2 = Email::Stuffer->from       ( 'Adam Kennedy<adam@phase-n.com>'        )
