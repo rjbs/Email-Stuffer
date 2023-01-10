@@ -381,7 +381,7 @@ sub subject {
 #####################################################################
 # Body and Attachments
 
-=method text_body $body [, $attribute => $value, ... ]
+=method text_body $body [, $attributes => $value, ... ]
 
 Sets the text body of the email. Appropriate headers are set for you.
 You may override MIME attributes as needed. See the C<attributes>
