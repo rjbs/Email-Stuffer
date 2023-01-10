@@ -1,5 +1,6 @@
 use v5.12.0;
 use warnings;
+
 use File::Spec::Functions ':ALL';
 
 use Test::More;
@@ -163,5 +164,3 @@ like $error,
     '_slurp croaks when passed a bad filename';
 
 done_testing;
-
-1;
