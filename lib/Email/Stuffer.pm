@@ -1,4 +1,4 @@
-use strict;
+use v5.12.0;
 use warnings;
 package Email::Stuffer;
 # ABSTRACT: A more casual approach to creating and sending Email:: emails
@@ -163,8 +163,6 @@ B<are not> chainable.
 
 =cut
 
-use 5.005;
-use strict;
 use Carp                   qw(croak);
 use File::Basename         ();
 use Params::Util 1.05      qw(_INSTANCE _INSTANCEDOES);
