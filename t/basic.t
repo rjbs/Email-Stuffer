@@ -1,5 +1,4 @@
-#!/usr/bin/perl
-use strict;
+use v5.12.0;
 use warnings;
 use File::Spec::Functions ':ALL';
 

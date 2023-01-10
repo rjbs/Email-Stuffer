@@ -1,5 +1,4 @@
-#!/usr/bin/perl
-use strict;
+use v5.12.0;
 use warnings;
 
 use Test::More qw[no_plan];
