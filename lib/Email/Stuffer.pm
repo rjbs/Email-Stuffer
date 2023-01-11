@@ -271,7 +271,7 @@ sub parts {
 
 =method header
 
-  $stuffer->header($header_name = $value)
+  $stuffer->header($header_name => $value)
 
 This method sets a named header in the email. Multiple calls with the same
 C<$header_name> will overwrite previous calls C<$value>.
