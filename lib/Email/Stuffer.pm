@@ -269,10 +269,12 @@ sub parts {
 #####################################################################
 # Header Methods
 
-=method header $header => $value
+=method header
 
-Sets a named header in the email. Multiple calls with the same $header
-will overwrite previous calls $value.
+  $stuffer->header($header_name = $value)
+
+This method sets a named header in the email. Multiple calls with the same
+C<$header_name> will overwrite previous calls C<$value>.
 
 =cut
 
@@ -283,9 +285,11 @@ sub header {
   return $self;
 }
 
-=method to @addresses
+=method to
 
-Sets the To: header in the email
+  $stuffer->to(@addresses)
+
+This method sets the To header in the email.
 
 =cut
 
@@ -311,9 +315,12 @@ sub to {
   return $self;
 }
 
-=method from $address
+=method from
 
-Sets the From: header in the email
+  $stuffer->from($address)
+
+
+This method sets the From header in the email.
 
 =cut
 
@@ -325,9 +332,11 @@ sub from {
   return $self;
 }
 
-=method reply_to $address
+=method reply_to
 
-Sets the Reply-To: header in the email
+  $stuffer->reply_to($address)
+
+This method sets the Reply-To header in the email.
 
 =cut
 
@@ -339,9 +348,11 @@ sub reply_to {
   return $self;
 }
 
-=method cc @addresses
+=method cc
 
-Sets the Cc: header in the email
+  $stuffer->cc(@addresses)
+
+This method sets the Cc header in the email.
 
 =cut
 
@@ -352,9 +363,11 @@ sub cc {
   return $self;
 }
 
-=method bcc @addresses
+=method bcc
 
-Sets the Bcc: header in the email
+  $stuffer->bcc(@addresses)
+
+This method sets the Bcc header in the email.
 
 =cut
 
@@ -365,9 +378,11 @@ sub bcc {
   return $self;
 }
 
-=method subject $text
+=method subject
 
-Sets the Subject: header in the email
+  $stuffer->subject($text)
+
+This method sets the Subject header in the email.
 
 =cut
 
@@ -381,7 +396,9 @@ sub subject {
 #####################################################################
 # Body and Attachments
 
-=method text_body $body [, $attributes => $value, ... ]
+=method text_body
+
+  $stuffer->text_body($body, %attributes);
 
 Sets the text body of the email. Appropriate headers are set for you.
 You may override MIME attributes as needed. See the C<attributes>
@@ -420,7 +437,9 @@ sub text_body {
   $self;
 }
 
-=method html_body $body [, $header => $value, ... ]
+=method html_body
+
+  $stuffer->html_body($body, %attributes);
 
 Sets the HTML body of the email. Appropriate headers are set for you.
 You may override MIME attributes as needed. See the C<attributes>
@@ -451,7 +470,9 @@ sub html_body {
   $self;
 }
 
-=method attach $contents [, $attribute => $value, ... ]
+=method attach
+
+  $stuffer->attach($contents, %attributes)
 
 Adds an attachment to the email. The first argument is the file contents
 followed by (as for text_body and html_body) the list of headers to use.
@@ -529,12 +550,16 @@ sub attach {
   $self;
 }
 
-=method attach_file $file [, $attribute => $value, ... ]
+=method attach_file
+
+  $stuffer->attach_file($file, %attributes)
 
 Attachs a file that already exists on the filesystem to the email.
 C<attach_file> will attempt to auto-detect the MIME type, and use the
 file's current name when attaching. See the C<attributes> parameter to
 L<Email::MIME/create> for the headers you can set.
+
+C<$file> can be a filename or an IO::All::File object.
 
 =cut
 
@@ -628,7 +653,9 @@ sub transport {
 
 =method email
 
-Creates and returns the full L<Email::MIME> object for the email.
+  my $email_mime = $stuffer->email;
+
+This method creates and returns the full L<Email::MIME> object for the email.
 
 =cut
 
@@ -688,8 +715,10 @@ sub _transfer_headers {
 
 =method as_string
 
-Returns the string form of the email. Identical to (and uses behind the
-scenes) Email::MIME-E<gt>as_string.
+  my $email_document = $stuffer->as_string;
+
+Returns the string form of the email.  Identical to (and uses behind the
+scenes) C<< Email::MIME->as_string >>.
 
 =cut
 
