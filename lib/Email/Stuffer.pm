@@ -487,19 +487,41 @@ sub _detect_content_type {
   my ($filename, $body) = @_;
 
   if (defined($filename)) {
-    if ($filename =~ /\.([a-zA-Z]{3,4})\z/) {
+    if ($filename =~ /\.([a-zA-Z]{3,5})\z/) {
       my $content_type = {
-        'gif'  => 'image/gif',
-        'png'  => 'image/png',
-        'jpg'  => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'txt'  => 'text/plain',
-        'htm'  => 'text/html',
-        'html' => 'text/html',
-        'css'  => 'text/css',
-        'csv'  => 'text/csv',
-        'pdf'  => 'application/pdf',
-        'wav'  => 'audio/wav',
+        'eml'   => 'message/rfc822',
+        'ics'   => 'text/calendar',
+        'vcs'   => 'text/x-vcalendar',
+        'vcf'   => 'text/vcard',
+        'vcard' => 'text/vcard',
+        'bmp'   => 'image/x-ms-bmp',
+        'gif'   => 'image/gif',
+        'png'   => 'image/png',
+        'jpg'   => 'image/jpeg',
+        'jpeg'  => 'image/jpeg',
+        'txt'   => 'text/plain',
+        'svg'   => 'image/svg+xml',
+        'htm'   => 'text/html',
+        'html'  => 'text/html',
+        'css'   => 'text/css',
+        'csv'   => 'text/csv',
+        'pdf'   => 'application/pdf',
+        'ogg'   => 'audio/ogg',
+        'flac'  => 'audio/flac',
+        'mp3'   => 'audio/mpeg',
+        'wav'   => 'audio/wav',
+        'mpeg'  => 'video/mpeg',
+        'mpg'   => 'video/mpeg',
+        'mp4'   => 'video/mp4',
+        'doc'   => 'application/msword',
+        'xls'   => 'application/vnd.ms-excel',
+        'ppt'   => 'application/vnd.ms-powerpoint',
+        'docx'  => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'pptx'  => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'xml'   => 'application/xml',
+        'gz'    => 'application/gzip',
+        'zip'   => 'application/zip',
       }->{lc($1)};
       return $content_type if defined $content_type;
     }
