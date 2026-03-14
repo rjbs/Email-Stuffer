@@ -50,7 +50,7 @@ like([$mail->parts]->[10]->content_type, qr(^image/png));
 
 sub slurp {
   my $fname = shift;
-  open my $fh, '<', $fname
+  open my $fh, '<:raw', $fname
     or Carp::croak("Can't open '$fname' for reading: '$!'");
   scalar(do { local $/; <$fh> })
 }
