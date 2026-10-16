@@ -191,9 +191,8 @@ You can pass a hashref of properties to set, including:
 * html_body
 * transport
 
-The to, cc, bcc, and reply_to headers properties may be provided as array
-references.  The array's contents will be used as the list of arguments to the
-setter.
+The to, cc, bcc, and reply_to headers properties may be provided as arrays.
+The array's contents will be used as the list of arguments to the setter.
 
 =cut
 
